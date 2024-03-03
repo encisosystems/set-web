@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import SplashScreen from './pages/SplashScreen.jsx'
-import EstimationTool from './pages/home';
+import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true);
-
-  const handleSplashFinish = () => {
-    setShowSplash(false);
-  };
-
-  // Retorna primeramente el SplashScreen y luego a la pantalla de inicio
   return (
-    <>
-      {showSplash && <SplashScreen onFinish={handleSplashFinish} />} 
-      {!showSplash && <EstimationTool />}
-    </>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
   );
 }
 
