@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+## Ejecución de la aplicación
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Para ejecutar la aplicación, se debe ejecutar el comando `npm start` en la terminal. Este comando iniciará un servidor web en el puerto 3000, y abrirá una ventana en el navegador con la aplicación. En caso de que no se abra automáticamente, se puede acceder a la aplicación en la dirección [http://localhost:3000](http://localhost:3000).
 
-## Available Scripts
+## Compilación de la aplicación
 
-In the project directory, you can run:
+Para compilar la aplicación, se debe ejecutar el comando `npm run build` en la terminal. Este comando generará una carpeta llamada `build` en la raíz del proyecto, la cual contiene los archivos necesarios para desplegar la aplicación en un servidor web.
 
-### `npm start`
+## Pruebas de la aplicación
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Para ejecutar las pruebas de la aplicación, se debe ejecutar el comando `npm test` en la terminal. Este comando ejecutará todas las pruebas unitarias de la aplicación, y mostrará los resultados en la terminal.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Despliegue de la aplicación en AWS EC2
 
-### `npm test`
+Para desplegar la aplicación en un servidor web de AWS EC2, se deben seguir los siguientes pasos:
+1. Crear una instancia de AWS EC2 con el sistema operativo Amazon Linux 2.
+2. Conectarse a la instancia de AWS EC2 a través de Putty.
+3. Instalar Node.js, npm y git en la instancia de AWS EC2.
+4. Clonar el repositorio de la aplicación en la instancia de AWS EC2.
+5. Instalar las dependencias de la aplicación con el comando `npm install`.
+6. Compilar la aplicación con el comando `npm run build`.
+7. Iniciar la aplicación con el comando `npm start`.
+8. Acceder a la aplicación en la dirección IP pública de la instancia de AWS EC2.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Para detener la aplicación, se debe ejecutar el comando `Ctrl + C` en la terminal.
