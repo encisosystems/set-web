@@ -23,7 +23,7 @@ export default function EstimationTool() {
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
-                `http://3.135.220.49/API/chat?task=${encodeURIComponent(task)}`,
+                `http://ec2-18-117-105-229.us-east-2.compute.amazonaws.com/API/chat?task=${encodeURIComponent(task)}`,
                 {
                 method: 'GET',
                 }
@@ -143,7 +143,7 @@ export default function EstimationTool() {
                             fullWidth
                             margin="normal"
                             InputProps={{
-                            readOnly: true,
+                                readOnly: true,
                             }}
                             variant="outlined"
                         />
