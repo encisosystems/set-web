@@ -1,4 +1,4 @@
-import EstimationTool from "./pages/home.jsx";
+import EstimationTool from "./pages/view/home";
 import './App.css';
 
 function App() {
