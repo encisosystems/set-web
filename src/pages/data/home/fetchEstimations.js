@@ -1,7 +1,9 @@
+import { API_URL } from "../../constants/api";
+
 export const fetchEstimations = async (task) => {
     try {
       const response = await fetch(
-        `http://18.221.175.62/API/chat?task=${encodeURIComponent(task)}`,
+        `${API_URL}/API/chat?task=${encodeURIComponent(task)}`,
         {
           method: "GET",
         }
