@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     TextField,
@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import ReactGA from 'react-ga4';
+import useAnalyticsEventTracker from "../hooks/useAnalyticsEventTracker";
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
@@ -19,7 +21,14 @@ export default function EstimationTool() {
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [toast, setToast] = useState({ open: false, message: "" });
-  
+    
+    const gaTrackerEvent = useAnalyticsEventTracker('estimation')
+
+    useEffect(() => {
+        ReactGA.send({ hitType: "pageview", page: "/", title: "Estimation page Home" });
+
+    }, [])
+
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
@@ -43,12 +52,15 @@ export default function EstimationTool() {
     };
   
     const handleEstimate = () => {
+
         setShowEstimations(false);
         setShowCopy(false);
         if (!task) {
             setShowAlert(true);
             return;
         }
+
+        gaTrackerEvent('estimate task submit', "Enviar tarea a estimar");
 
         fetchEstimations()
         .then((data) => {
@@ -85,6 +97,7 @@ export default function EstimationTool() {
   };
 
     const copyToClipboard = () => {
+        gaTrackerEvent('copy task estimated action', "Copy generated estimation");
         navigator.clipboard.writeText(estimations).then(() => {
             setToast({
                     open: true,
