@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Footer from "../components/Footer";
 import {
     Button,
     TextField,
@@ -164,6 +165,7 @@ export default function EstimationTool() {
                     />
                 </div>
             </div>
+            <Footer></Footer>
         </div>
     );
 }
