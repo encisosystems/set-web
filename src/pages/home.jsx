@@ -8,9 +8,11 @@ import {
     DialogContentText,
     DialogTitle,
     IconButton,
+    InputAdornment,
     Rating,
     LinearProgress
 } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
 
@@ -46,7 +48,9 @@ export default function EstimationTool() {
             throw error;
         }
     };
-  
+    const handleClear = () => {
+        setTask(''); 
+    };
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
@@ -164,6 +168,15 @@ export default function EstimationTool() {
                         margin="normal"
                         autoComplete="off"
                         inputProps={{ style: { textAlign: 'center' } }} 
+                        InputProps={{
+                        endAdornment: (
+                        <InputAdornment position="end">
+                        <Button onClick={handleClear} edge="end">
+                           <DeleteIcon />
+                        </Button>
+                    </InputAdornment>
+                    ),
+                }}
                     />
                     <div>
                     {showLoading && <LinearProgress />}
