@@ -9,11 +9,13 @@ import {
     DialogTitle,
     IconButton,
     Rating,
+    LinearProgress
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
 
 export default function EstimationTool() {
+    const API_URL = 'http://18.221.34.229'
     const [task, setTask] = useState("");
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
@@ -22,9 +24,7 @@ export default function EstimationTool() {
     const [id, setID] = useState(0);
     const [ratingValue, setRatingValue] = useState(0);
     const [toast, setToast] = useState({ open: false, message: "" });
-
-    const API_URL = 'http://18.221.34.229'
-  
+    const [showLoading, setShowLoading] = useState(false);
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
@@ -50,13 +50,16 @@ export default function EstimationTool() {
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
+        setShowLoading(true);
         if (!task) {
             setShowAlert(true);
+            setShowLoading(false);
             return;
         }
 
         fetchEstimations()
-        .then((data) => {
+        .then((data) => { 
+            setShowLoading(false);
             //console.log("Estimations:", data.smart);
             if (data.smart) {
                 // Procesa y muestra las estimaciones si smart es true
@@ -79,6 +82,7 @@ export default function EstimationTool() {
 
                 setEstimations(tasksString);
                 setShowEstimations(true);
+                setShowLoading(false);
                 setShowCopy(false); // Controla la visibilidad del botón de copia
             }
             setID(data.id)
@@ -161,6 +165,9 @@ export default function EstimationTool() {
                         autoComplete="off"
                         inputProps={{ style: { textAlign: 'center' } }} 
                     />
+                    <div>
+                    {showLoading && <LinearProgress />}
+                    </div>
                     
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                         <Button
