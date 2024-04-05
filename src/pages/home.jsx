@@ -8,24 +8,29 @@ import {
     DialogContentText,
     DialogTitle,
     IconButton,
-    InputAdornment
+    InputAdornment,
+    Rating,
+    LinearProgress
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
 
 export default function EstimationTool() {
+    const API_URL = 'http://18.221.34.229'
     const [task, setTask] = useState("");
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [id, setID] = useState(0);
+    const [ratingValue, setRatingValue] = useState(0);
     const [toast, setToast] = useState({ open: false, message: "" });
-  
+    const [showLoading, setShowLoading] = useState(false);
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
-                `http://18.221.34.229/API/chat?task=${encodeURIComponent(task)}`,
+                `${API_URL}/API/chat?task=${encodeURIComponent(task)}`,
                 {
                 method: 'GET',
                 }
@@ -49,13 +54,16 @@ export default function EstimationTool() {
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
+        setShowLoading(true);
         if (!task) {
             setShowAlert(true);
+            setShowLoading(false);
             return;
         }
 
         fetchEstimations()
-        .then((data) => {
+        .then((data) => { 
+            setShowLoading(false);
             //console.log("Estimations:", data.smart);
             if (data.smart) {
                 // Procesa y muestra las estimaciones si smart es true
@@ -78,8 +86,10 @@ export default function EstimationTool() {
 
                 setEstimations(tasksString);
                 setShowEstimations(true);
+                setShowLoading(false);
                 setShowCopy(false); // Controla la visibilidad del botón de copia
             }
+            setID(data.id)
         })
         .catch((error) => {
             setEstimations(`Error al obtener las estimaciones: ${error.message}`);
@@ -97,6 +107,38 @@ export default function EstimationTool() {
         });
     };
 
+    const onChangeRating = async (event, newRating) => {
+        setRatingValue(newRating)
+        console.log(newRating)
+        try {
+            const response = await fetch(
+                `${API_URL}/API/estimations/${id}`,
+                {
+                method: 'POST',
+                body: JSON.stringify({
+                    'stars': newRating,
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+            );
+        
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            setToast({
+                open: true,
+                message: "Gracias por evaluar las Estimaciones"});
+        } catch (error) {
+            console.error('Error fetching estimations:', error);
+            throw error;
+        }
+
+        
+    
+        // pendiente: llamar API para guardar el valor
+    }
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
@@ -136,6 +178,10 @@ export default function EstimationTool() {
                     ),
                 }}
                     />
+                    <div>
+                    {showLoading && <LinearProgress />}
+                    </div>
+                    
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                         <Button
                             onClick={handleEstimate}
@@ -167,6 +213,17 @@ export default function EstimationTool() {
                             </div>
                         )}
                         </>
+                    )}
+                    {showEstimations && (
+                        <div>
+                            <h3>Evalua las estimaciones</h3>
+                            <Rating
+                                name="rating"
+                                value={ratingValue}
+                                onChange={onChangeRating}
+                            />
+
+                        </div>
                     )}
 
                     <Toast
