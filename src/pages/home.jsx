@@ -15,6 +15,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import Dropdownn from "./ListaIdiomas";
 
 export default function EstimationTool() {
     const API_URL = 'http://18.221.34.229'
@@ -161,6 +162,17 @@ export default function EstimationTool() {
                     </Dialog>
 
                     <TextField
+                       label="Ingrese su tarea"
+                       value={task}
+                       onChange={(e) => setTask(e.target.value)}
+                       fullWidth
+                       margin="normal"
+                       autoComplete="off"
+                       inputProps={{ style: { textAlign: 'center' } }}
+                       multiline
+                       rowsMax={10} 
+                     />
+                     
                         label="Ingrese su tarea"
                         value={task}
                         onChange={(e) => setTask(e.target.value)}
@@ -177,7 +189,6 @@ export default function EstimationTool() {
                     </InputAdornment>
                     ),
                 }}
-                    />
                     <div>
                     {showLoading && <LinearProgress />}
                     </div>
@@ -191,7 +202,7 @@ export default function EstimationTool() {
                             Estimar
                         </Button>
                     </div>
-
+       
                     {showEstimations && (
                         <>
                         <TextField
@@ -233,6 +244,9 @@ export default function EstimationTool() {
                     />
                 </div>
             </div>
+            <div className="container" style={{ position: 'absolute', top:'10px',left:'10px'}}>
+               <Dropdownn />
+             </div>
         </div>
     );
 }
