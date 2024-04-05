@@ -10,11 +10,15 @@ import {
     IconButton,
     InputAdornment,
     Rating,
-    LinearProgress
+    LinearProgress,
+    Select,
+    MenuItem
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+
+const seniorityLevels = ["Junior", "Middle", "Semi-senior", "Senior"];
 
 export default function EstimationTool() {
     const API_URL = 'http://18.221.34.229'
@@ -25,84 +29,87 @@ export default function EstimationTool() {
     const [showAlert, setShowAlert] = useState(false);
     const [id, setID] = useState(0);
     const [ratingValue, setRatingValue] = useState(0);
+    const [selectedSeniority, setSelectedSeniority] = useState("");
     const [toast, setToast] = useState({ open: false, message: "" });
     const [showLoading, setShowLoading] = useState(false);
+
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
-                `${API_URL}/API/chat?task=${encodeURIComponent(task)}`,
-                {
-                method: 'GET',
+                `${API_URL}/API/chat?task=${encodeURIComponent(task)}&seniority=${encodeURIComponent(selectedSeniority)}`,                {
+                    method: 'GET',
                 }
             );
-        
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-        
+
             const data = await response.json();
             console.log("data:", data);
+            console.log("task:", task);
+            console.log("seniority:", selectedSeniority);
             return data;
         } catch (error) {
             console.error('Error fetching estimations:', error);
             throw error;
         }
     };
+
     const handleClear = () => {
-        setTask(''); 
+        setTask('');
     };
+
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
         setShowLoading(true);
-        if (!task) {
+        if (!task || !selectedSeniority) {
             setShowAlert(true);
             setShowLoading(false);
             return;
         }
 
         fetchEstimations()
-        .then((data) => { 
-            setShowLoading(false);
-            //console.log("Estimations:", data.smart);
-            if (data.smart) {
-                // Procesa y muestra las estimaciones si smart es true
-                const tasksString = data.estimation.tasks
-                .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
-                .join("\n");
-                setEstimations(
-                    `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
-                        (acc, curr) => acc + curr.estimated_hours,
-                        0
-                    )} horas`
-                );
-                setShowEstimations(true);
-                setShowCopy(true);
-            }
-            else {
-                const tasksString = data.estimation.tasks
-                .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
-                .join("\n");
-
-                setEstimations(tasksString);
-                setShowEstimations(true);
+            .then((data) => {
                 setShowLoading(false);
-                setShowCopy(false); // Controla la visibilidad del botón de copia
-            }
-            setID(data.id)
-        })
-        .catch((error) => {
-            setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-            setShowEstimations(true);
-            setShowCopy(false); // Ocultar el botón de copia en caso de error
-        });  
-  };
+                if (data.smart) {
+                    const tasksString = data.estimation.tasks
+                        .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
+                        .join("\n");
+                    setEstimations(
+                        `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
+                            (acc, curr) => acc + curr.estimated_hours,
+                            0
+                        )} horas`
+                    );
+                    setShowEstimations(true);
+                    setShowCopy(true);
+                }
+                else {
+                    const tasksString = data.estimation.tasks
+                        .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
+                        .join("\n");
+
+                    setEstimations(tasksString);
+                    setShowEstimations(true);
+                    setShowLoading(false);
+                    setShowCopy(false);
+                }
+                setID(data.id)
+            })
+            .catch((error) => {
+                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+                setShowEstimations(true);
+                setShowCopy(false);
+            });
+    };
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(estimations).then(() => {
             setToast({
-                    open: true,
-                    message: "Estimaciones copiadas al portapapeles",
+                open: true,
+                message: "Estimaciones copiadas al portapapeles",
             });
         });
     };
@@ -114,16 +121,16 @@ export default function EstimationTool() {
             const response = await fetch(
                 `${API_URL}/API/estimations/${id}`,
                 {
-                method: 'POST',
-                body: JSON.stringify({
-                    'stars': newRating,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                  },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'stars': newRating,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
             );
-        
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -134,11 +141,8 @@ export default function EstimationTool() {
             console.error('Error fetching estimations:', error);
             throw error;
         }
-
-        
-    
-        // pendiente: llamar API para guardar el valor
     }
+
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
@@ -150,7 +154,7 @@ export default function EstimationTool() {
                         <DialogTitle>Alerta</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                Por favor, ingrese una tarea antes de obtener la estimación.
+                                Por favor, ingrese una tarea y seleccione un nivel de seniority antes de obtener la estimación.
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
@@ -167,21 +171,36 @@ export default function EstimationTool() {
                         fullWidth
                         margin="normal"
                         autoComplete="off"
-                        inputProps={{ style: { textAlign: 'center' } }} 
+                        inputProps={{ style: { textAlign: 'center' } }}
                         InputProps={{
-                        endAdornment: (
-                        <InputAdornment position="end">
-                        <Button onClick={handleClear} edge="end">
-                           <DeleteIcon />
-                        </Button>
-                    </InputAdornment>
-                    ),
-                }}
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Button onClick={handleClear} edge="end">
+                                        <DeleteIcon />
+                                    </Button>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
+
+                    <Select
+                        value={selectedSeniority}
+                        onChange={(e) => setSelectedSeniority(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        label="Seleccione el nivel de seniority"
+                    >
+                        {seniorityLevels.map((level) => (
+                            <MenuItem key={level} value={level}>
+                                {level}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
                     <div>
-                    {showLoading && <LinearProgress />}
+                        {showLoading && <LinearProgress />}
                     </div>
-                    
+
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                         <Button
                             onClick={handleEstimate}
@@ -194,24 +213,24 @@ export default function EstimationTool() {
 
                     {showEstimations && (
                         <>
-                        <TextField
-                            label="Estimaciones"
-                            value={estimations}
-                            multiline
-                            fullWidth
-                            margin="normal"
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                            variant="outlined"
-                        />
-                        {showCopy && (
-                            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                                <IconButton onClick={copyToClipboard} aria-label="copy">
-                                    <ContentCopyIcon />
-                                </IconButton>
-                            </div>
-                        )}
+                            <TextField
+                                label="Estimaciones"
+                                value={estimations}
+                                multiline
+                                fullWidth
+                                margin="normal"
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                variant="outlined"
+                            />
+                            {showCopy && (
+                                <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+                                    <IconButton onClick={copyToClipboard} aria-label="copy">
+                                        <ContentCopyIcon />
+                                    </IconButton>
+                                </div>
+                            )}
                         </>
                     )}
                     {showEstimations && (
