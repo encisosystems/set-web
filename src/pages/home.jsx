@@ -9,8 +9,10 @@ import {
     DialogTitle,
     IconButton,
 } from "@mui/material";
+import Modal from "@mui/material/Modal";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import { LoginModal, RegisterModal } from "./modal";
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
@@ -19,6 +21,10 @@ export default function EstimationTool() {
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [toast, setToast] = useState({ open: false, message: "" });
+    const [login, setLogin] = useState(true);
+    const handleLogin = () => setLogin(!login);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(!open);
   
     const fetchEstimations = async () => {
         try {
@@ -93,8 +99,25 @@ export default function EstimationTool() {
         });
     };
 
+    const styleLogin = {
+        marginLeft: "auto",
+        width: "fit-content"
+    };
+
     return (
         <div>
+            <div style={styleLogin}>
+                <Button variant="contained" onClick={handleOpen} sx={styleLogin} >
+                    {login && (<>Iniciar sesión</>)}
+                    {!login && (<>Registrarse</>)}
+                </Button>
+            </div>
+            <Modal open={open} onClose={handleOpen} >
+                <div>
+                    {login && (<LoginModal handleLogin={handleLogin} handleOpen={handleOpen} />)}
+                    {!login && (<RegisterModal handleLogin={handleLogin} handleOpen={handleOpen} />)}
+                </div>
+            </Modal>
             <div style={{ width: '100%', top: 20 }}>
                 <h1 style={{textAlign: 'center' }}>Simple Estimation Tool</h1>
             </div>
