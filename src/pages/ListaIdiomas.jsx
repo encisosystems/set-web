@@ -12,11 +12,14 @@ function Dropdownn({ onLanguageChange }) {
 
   const accionprueba = (id) => {
     setSelectedLanguage("ES");
+    alert("Idioma ES, ID: " + id);
     onLanguageChange(id); 
   }
 
   const accionprueba2 = (id) => {
     setSelectedLanguage("US");
+    alert("Idioma US, ID: " + id);
+    console.log('Drop',id)
     onLanguageChange(id);
   }
 
