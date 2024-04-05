@@ -8,12 +8,16 @@ import {
     DialogContentText,
     DialogTitle,
     IconButton,
+    Menu,
+    MenuItem,
     InputAdornment,
     Rating,
     LinearProgress
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ShareIcon from "@mui/icons-material/Share";
+import { Facebook, WhatsApp, Email } from "@mui/icons-material";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
 import Dropdownn from "./ListaIdiomas";
 
@@ -28,6 +32,7 @@ export default function EstimationTool() {
     const [idLanguage, setIdLanguage] = useState(1);
     const [ratingValue, setRatingValue] = useState(0);
     const [toast, setToast] = useState({ open: false, message: "" });
+    const [anchorEl, setAnchorEl] = useState(null);
     const [showLoading, setShowLoading] = useState(false);
 
 
@@ -75,7 +80,36 @@ export default function EstimationTool() {
         }
 
         fetchEstimations()
-            .then((data) => {
+        .then((data) => { 
+            setShowLoading(false);
+            //console.log("Estimations:", data.smart);
+            if (data.smart) {
+                // Procesa y muestra las estimaciones si smart es true
+                const tasksString = data.estimation.tasks
+                .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
+                .join("\n");
+                setEstimations(
+                    `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
+                        (acc, curr) => acc + curr.estimated_hours,
+                        0
+                    )} horas`
+                );
+                setShowEstimations(true);
+                setShowCopy(true);
+            }
+            else {
+                const tasksString = data.estimation.tasks
+                .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
+                .join("\n");
+
+                    setEstimations(tasksString);
+                    setShowEstimations(true);
+                    setShowCopy(false);
+                }
+            })
+            .catch((error) => {
+                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+                setShowEstimations(true);
                 setShowLoading(false);
                 //console.log("Estimations:", data.smart);
                 if (data.smart) {
@@ -120,6 +154,31 @@ export default function EstimationTool() {
         });
     };
 
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const shareFacebook = () => {
+        const shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(estimations)}`;
+        window.open(shareURL, '_blank');
+    };
+
+    const shareWhatsApp = () => {
+        const shareURL = `https://api.whatsapp.com/send?text=${encodeURIComponent(estimations)}`;
+        window.open(shareURL, '_blank');
+    };
+
+    const shareGmail = () => {
+        const subject = "Estimaciones"; // Asunto del correo electrónico
+        const body = estimations; // Contenido del correo electrónico
+        const shareURL = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(shareURL);
+    };
+
     const onChangeRating = async (event, newRating) => {
         setRatingValue(newRating)
         console.log(newRating)
@@ -152,9 +211,7 @@ export default function EstimationTool() {
 
         // pendiente: llamar API para guardar el valor
     }
-
-
-
+    
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
@@ -199,7 +256,6 @@ export default function EstimationTool() {
                     <div>
                         {showLoading && <LinearProgress />}
                     </div>
-
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                         <Button
                             onClick={handleEstimate}
@@ -230,6 +286,35 @@ export default function EstimationTool() {
                                     </IconButton>
                                 </div>
                             )}
+                            {/* Botón de Compartir */}
+                            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleClick}
+                                >
+                                    <ShareIcon />
+                                    Compartir
+                                </Button>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                >
+                                    <MenuItem onClick={shareFacebook}>
+                                        <Facebook style={{ marginRight: '8px' }} />
+                                        Compartir en Facebook
+                                    </MenuItem>
+                                    <MenuItem onClick={shareWhatsApp}>
+                                        <WhatsApp style={{ marginRight: '8px' }} />
+                                        Compartir en WhatsApp
+                                    </MenuItem>
+                                    <MenuItem onClick={shareGmail}>
+                                        <Email style={{ marginRight: '8px' }} />
+                                        Enviar por Gmail
+                                    </MenuItem>
+                                </Menu>
+                            </div>
                         </>
                     )}
                     {showEstimations && (
