@@ -4,20 +4,23 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap
 import flagES from './ES.png'; // Importa la imagen de la bandera para ES
 import flagUS from './US.png'; // Importa la imagen de la bandera para US
 
-function Dropdownn() {
+function Dropdownn({ onLanguageChange }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("Language");
 
   const toggle = () => setDropdownOpen(prevState => !prevState);
 
-  const accionprueba = () => {
+  const accionprueba = (id) => {
     setSelectedLanguage("ES");
-    alert("idioma ES");
+    alert("Idioma ES, ID: " + id);
+    onLanguageChange(id); 
   }
 
-  const accionprueba2 = () => {
+  const accionprueba2 = (id) => {
     setSelectedLanguage("US");
-    alert("Idioma US");
+    alert("Idioma US, ID: " + id);
+    console.log('Drop',id)
+    onLanguageChange(id);
   }
 
   useEffect(() => {
@@ -33,11 +36,20 @@ function Dropdownn() {
           {selectedLanguage}
         </DropdownToggle>
         <DropdownMenu style={{ background: 'linear-gradient(45deg, #287ddd, #ffffff)' }}>
-          <DropdownItem onClick={accionprueba} style={{ color: '#ffffff', border: 'none' }}>
+          <DropdownItem
+            onClick={() => accionprueba("1")} // Pasa el ID como parámetro
+            style={{ color: '#ffffff', border: 'none' }}
+            id="1"
+            
+          >
             <img src={flagES} alt="ES" style={{ width: '20px', height: '20px', marginLeft: '7px' }} /> ES
           </DropdownItem>
           <DropdownItem divider />
-          <DropdownItem onClick={accionprueba2} style={{ color: '#ffffff', border: 'none' }}>
+          <DropdownItem
+            onClick={() => accionprueba2("2")} // Pasa el ID como parámetro
+            style={{ color: '#ffffff', border: 'none' }}
+            id="2"
+          >
             <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginLeft: '0.1px' }} /> US
           </DropdownItem>
         </DropdownMenu>

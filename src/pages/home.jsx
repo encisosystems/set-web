@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
     Button,
     TextField,
@@ -25,22 +25,30 @@ export default function EstimationTool() {
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [id, setID] = useState(0);
+    const [idLanguage, setIdLanguage] = useState(1);
     const [ratingValue, setRatingValue] = useState(0);
     const [toast, setToast] = useState({ open: false, message: "" });
     const [showLoading, setShowLoading] = useState(false);
+
+
+    
+    useEffect(() => {
+    }, [idLanguage]);
+
+
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
-                `${API_URL}/API/chat?task=${encodeURIComponent(task)}`,
+                `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${idLanguage}`,
                 {
-                method: 'GET',
+                    method: 'GET',
                 }
             );
-        
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-        
+
             const data = await response.json();
             console.log("data:", data);
             return data;
@@ -49,8 +57,12 @@ export default function EstimationTool() {
             throw error;
         }
     };
+    
+    const handleLanguageChange = (selectedId) => {
+        setIdLanguage(selectedId); // Actualiza el ID seleccionado
+    };
     const handleClear = () => {
-        setTask(''); 
+        setTask('');
     };
     const handleEstimate = () => {
         setShowEstimations(false);
@@ -63,47 +75,47 @@ export default function EstimationTool() {
         }
 
         fetchEstimations()
-        .then((data) => { 
-            setShowLoading(false);
-            //console.log("Estimations:", data.smart);
-            if (data.smart) {
-                // Procesa y muestra las estimaciones si smart es true
-                const tasksString = data.estimation.tasks
-                .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
-                .join("\n");
-                setEstimations(
-                    `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
-                        (acc, curr) => acc + curr.estimated_hours,
-                        0
-                    )} horas`
-                );
-                setShowEstimations(true);
-                setShowCopy(true);
-            }
-            else {
-                const tasksString = data.estimation.tasks
-                .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
-                .join("\n");
-
-                setEstimations(tasksString);
-                setShowEstimations(true);
+            .then((data) => {
                 setShowLoading(false);
-                setShowCopy(false); // Controla la visibilidad del botón de copia
-            }
-            setID(data.id)
-        })
-        .catch((error) => {
-            setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-            setShowEstimations(true);
-            setShowCopy(false); // Ocultar el botón de copia en caso de error
-        });  
-  };
+                //console.log("Estimations:", data.smart);
+                if (data.smart) {
+                    // Procesa y muestra las estimaciones si smart es true
+                    const tasksString = data.estimation.tasks
+                        .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
+                        .join("\n");
+                    setEstimations(
+                        `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
+                            (acc, curr) => acc + curr.estimated_hours,
+                            0
+                        )} horas`
+                    );
+                    setShowEstimations(true);
+                    setShowCopy(true);
+                }
+                else {
+                    const tasksString = data.estimation.tasks
+                        .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
+                        .join("\n");
+
+                    setEstimations(tasksString);
+                    setShowEstimations(true);
+                    setShowLoading(false);
+                    setShowCopy(false); // Controla la visibilidad del botón de copia
+                }
+                setID(data.id)
+            })
+            .catch((error) => {
+                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+                setShowEstimations(true);
+                setShowCopy(false); // Ocultar el botón de copia en caso de error
+            });
+    };
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(estimations).then(() => {
             setToast({
-                    open: true,
-                    message: "Estimaciones copiadas al portapapeles",
+                open: true,
+                message: "Estimaciones copiadas al portapapeles",
             });
         });
     };
@@ -115,35 +127,38 @@ export default function EstimationTool() {
             const response = await fetch(
                 `${API_URL}/API/estimations/${id}`,
                 {
-                method: 'POST',
-                body: JSON.stringify({
-                    'stars': newRating,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                  },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        'stars': newRating,
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
             );
-        
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             setToast({
                 open: true,
-                message: "Gracias por evaluar las Estimaciones"});
+                message: "Gracias por evaluar las Estimaciones"
+            });
         } catch (error) {
             console.error('Error fetching estimations:', error);
             throw error;
         }
 
-        
-    
+
         // pendiente: llamar API para guardar el valor
     }
+
+
+
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
-                <h1 style={{textAlign: 'center' }}>Simple Estimation Tool</h1>
+                <h1 style={{ textAlign: 'center' }}>Simple Estimation Tool</h1>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
@@ -162,37 +177,29 @@ export default function EstimationTool() {
                     </Dialog>
 
                     <TextField
-                       label="Ingrese su tarea"
-                       value={task}
-                       onChange={(e) => setTask(e.target.value)}
-                       fullWidth
-                       margin="normal"
-                       autoComplete="off"
-                       inputProps={{ style: { textAlign: 'center' } }}
-                       multiline
-                       rowsMax={10} 
-                     />
-                     
                         label="Ingrese su tarea"
                         value={task}
                         onChange={(e) => setTask(e.target.value)}
                         fullWidth
                         margin="normal"
                         autoComplete="off"
-                        inputProps={{ style: { textAlign: 'center' } }} 
+                        inputProps={{ style: { textAlign: 'center' } }}
+                        multiline
+                        rowsMax={10}
                         InputProps={{
-                        endAdornment: (
-                        <InputAdornment position="end">
-                        <Button onClick={handleClear} edge="end">
-                           <DeleteIcon />
-                        </Button>
-                    </InputAdornment>
-                    ),
-                }}
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <Button onClick={handleClear} edge="end">
+                                        <DeleteIcon />
+                                    </Button>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
                     <div>
-                    {showLoading && <LinearProgress />}
+                        {showLoading && <LinearProgress />}
                     </div>
-                    
+
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                         <Button
                             onClick={handleEstimate}
@@ -202,27 +209,27 @@ export default function EstimationTool() {
                             Estimar
                         </Button>
                     </div>
-       
+
                     {showEstimations && (
                         <>
-                        <TextField
-                            label="Estimaciones"
-                            value={estimations}
-                            multiline
-                            fullWidth
-                            margin="normal"
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                            variant="outlined"
-                        />
-                        {showCopy && (
-                            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                                <IconButton onClick={copyToClipboard} aria-label="copy">
-                                    <ContentCopyIcon />
-                                </IconButton>
-                            </div>
-                        )}
+                            <TextField
+                                label="Estimaciones"
+                                value={estimations}
+                                multiline
+                                fullWidth
+                                margin="normal"
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                variant="outlined"
+                            />
+                            {showCopy && (
+                                <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+                                    <IconButton onClick={copyToClipboard} aria-label="copy">
+                                        <ContentCopyIcon />
+                                    </IconButton>
+                                </div>
+                            )}
                         </>
                     )}
                     {showEstimations && (
@@ -244,9 +251,10 @@ export default function EstimationTool() {
                     />
                 </div>
             </div>
-            <div className="container" style={{ position: 'absolute', top:'10px',left:'10px'}}>
-               <Dropdownn />
-             </div>
+            <div className="container" style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                <Dropdownn onLanguageChange={handleLanguageChange}/>
+
+            </div>
         </div>
     );
 }
