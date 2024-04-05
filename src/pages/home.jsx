@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import Dropdownn from "./ListaIdiomas";
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
@@ -92,7 +93,7 @@ export default function EstimationTool() {
             });
         });
     };
-
+                
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
@@ -115,15 +116,17 @@ export default function EstimationTool() {
                     </Dialog>
 
                     <TextField
-                        label="Ingrese su tarea"
-                        value={task}
-                        onChange={(e) => setTask(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        autoComplete="off"
-                        inputProps={{ style: { textAlign: 'center' } }} 
-                    />
-                    
+                       label="Ingrese su tarea"
+                       value={task}
+                       onChange={(e) => setTask(e.target.value)}
+                       fullWidth
+                       margin="normal"
+                       autoComplete="off"
+                       inputProps={{ style: { textAlign: 'center' } }}
+                       multiline
+                       rowsMax={10} 
+                     />
+                     
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                         <Button
                             onClick={handleEstimate}
@@ -133,7 +136,7 @@ export default function EstimationTool() {
                             Estimar
                         </Button>
                     </div>
-
+       
                     {showEstimations && (
                         <>
                         <TextField
@@ -164,6 +167,9 @@ export default function EstimationTool() {
                     />
                 </div>
             </div>
+            <div className="container" style={{ position: 'absolute', top:'10px',left:'10px'}}>
+               <Dropdownn />
+             </div>
         </div>
     );
 }
