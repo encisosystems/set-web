@@ -1,8 +1,14 @@
-import { useRef, useState } from "react";
-import { fetchEstimations, saveEstimation, setRating } from "../../data/home/fetchEstimations";
+import { useRef, useState, useEffect } from "react";
+import {
+  fetchEstimations,
+  saveEstimation,
+  setRating,
+} from "../../data/home/fetchEstimations";
 import { useDarkMode } from "./userDarkMode";
+import { useSpeechToText } from "./useSpeechToText";
 
 export const useHome = () => {
+  const [task, setTask] = useState("");
   const {
     darkMode,
     showDislikeFeedback,
@@ -20,10 +26,18 @@ export const useHome = () => {
     toggleDarkMode,
     handleLikeClick,
     handleSubmitDislikeFeedback,
-    handleDisLikeClick
+    handleDisLikeClick,
   } = useDarkMode();
 
-  const [task, setTask] = useState("");
+  const {
+    transcript,
+    isRecording,
+    setTranscript,
+    stopRecording,
+    handleMicClick,
+  } = useSpeechToText(setTask);
+
+
   const [estimations, setEstimations] = useState("");
   const [showEstimations, setShowEstimations] = useState(false);
   const [showCopy, setShowCopy] = useState(false);
@@ -58,7 +72,6 @@ export const useHome = () => {
         setShowCopy(false); // Controla la visibilidad del botón de copia
       }
       id.current = data.id;
-      
     } catch (error) {
       setEstimations(`Error al obtener las estimaciones: ${error.message}`);
       setShowEstimations(true);
@@ -66,21 +79,20 @@ export const useHome = () => {
     }
   };
 
- 
   const handleLikeClickAction = () => {
     handleLikeClick();
     navigator.clipboard.writeText(estimations).then(() => {
       setToast({
-              open: true,
-              message: "Te gusta la respuesta",
+        open: true,
+        message: "Te gusta la respuesta",
       });
-  });
-  }
-  
+    });
+  };
+
   const handleSubmitDislikeFeedbackAction = () => {
     handleSubmitDislikeFeedback();
     setToast({ open: true, message: "¡Gracias por tu mensaje! :)" });
-  }
+  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(estimations).then(() => {
@@ -90,8 +102,6 @@ export const useHome = () => {
       });
     });
   };
-
-  
 
   const onChangeRating = async (_, newRating) => {
     setRatingValue(newRating);
@@ -110,6 +120,16 @@ export const useHome = () => {
   };
 
 
+/*   useEffect(() => {
+    console.log(isRecording,transcript)
+    if (!isRecording) {
+      setTask((prevTask) => prevTask + transcript);
+      setTranscript('');
+    }else {
+      setTask('');
+    }
+  }, [isRecording, transcript]); */
+
   // funciones privadas
   const _getTasksStringSmart = (data) => {
     return data.estimation.tasks
@@ -124,7 +144,6 @@ export const useHome = () => {
     )} horas`;
   };
 
- 
   return {
     task,
     estimations,
@@ -143,6 +162,11 @@ export const useHome = () => {
     setLikeClicked,
     imagen,
     frase,
+    transcript,
+    isRecording,
+    setTranscript,
+    stopRecording,
+    handleMicClick,
     handleCloseDislikeFeedback,
     setTask,
     setEstimations,
@@ -157,6 +181,6 @@ export const useHome = () => {
     handleLikeClickAction,
     handleSubmitDislikeFeedbackAction,
     handleDisLikeClick,
-    setDislikeFeedback
+    setDislikeFeedback,
   };
 };

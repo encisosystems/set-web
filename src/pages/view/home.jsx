@@ -2,6 +2,8 @@ import Brightness7Icon from "@mui/icons-material/Brightness7"; // Icono para rep
 import Brightness3Icon from "@mui/icons-material/Brightness3";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import {MicButton} from "./../components/micBotton";
+import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 import {
   Button,
@@ -13,6 +15,7 @@ import {
   DialogTitle,
   IconButton,
   Rating,
+  InputAdornment,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast"; // Componente Toast para mostrar mensajes
@@ -34,6 +37,12 @@ export default function EstimationTool() {
     likeClicked,
     imagen,
     frase,
+    handleMicClick,
+    isRecording,
+    handleClear,
+    setTranscript,
+    stopRecording,
+    transcript,
     setDarkMode,
     setDislikeClicked,
     setLikeClicked,
@@ -109,12 +118,25 @@ export default function EstimationTool() {
           </div>
           <TextField
             label="Ingrese su tarea"
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
+            value={transcript || task}
+            onChange={(e) => {
+              setTask(e.target.value);
+              setTranscript(e.target.value)
+            }}
             fullWidth
             margin="normal"
             autoComplete="off"
             inputProps={{ style: { textAlign: "center" } }}
+            InputProps={{
+              endAdornment: (
+                  <InputAdornment position="end">
+                      <MicButton isRecording={isRecording} handleClick={handleMicClick} />
+                      <Button onClick={handleClear} edge="end">
+                          <DeleteIcon />
+                      </Button>
+                  </InputAdornment>
+              ),
+          }}
           />
 
           <div

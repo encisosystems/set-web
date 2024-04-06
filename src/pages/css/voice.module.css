@@ -1,0 +1,58 @@
+.mic-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mic-container .material-symbols-outlined {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: blue; /* Color del ícono */
+    font-size: 20px; /* Tamaño del ícono */
+    background: #ffffff; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: .5s;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2);
+}
+
+.material-symbols-outlined:before {
+    content: '';
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    opacity: .2;
+    z-index: -1;
+    position: absolute;
+}
+
+.mic-container.active .material-symbols-outlined {
+    background: #ff0000;
+    color:#ffffff; /* Color del ícono */
+}
+
+.mic-container.active .material-symbols-outlined:before {
+    background: gray;
+    animation: bounce .8s ease-in-out infinite .5s;
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.4);
+    }
+    75% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.3);
+    }
+}
