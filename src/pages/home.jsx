@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logosvg from "../assets/logosvg.svg";
+import logotipo from "../assets/logotipo.svg";
 import {
   Button,
   TextField,
@@ -96,8 +96,7 @@ export default function EstimationTool() {
   return (
     <div>
       <div className="container" style={{ width: "100%", top: 20 }}>
-        <img className="logo-menu" src={logosvg} />
-        <h1 className="tittle-header">Simple Estimation Tool</h1>
+        <img className="logo-menu" src={logotipo} />
       </div>
       <div
         style={{
@@ -144,9 +143,9 @@ export default function EstimationTool() {
               variant="contained"
               color="primary"
               sx={{
-                backgroundColor: "#4CAF50", // Color verde
+                backgroundColor: "#0604A3", // Color verde
                 "&:hover": {
-                  backgroundColor: "#388E3C", // Color verde más oscuro al hacer hover
+                  backgroundColor: "#940094", // Color verde más oscuro al hacer hover
                 },
               }}
             >
