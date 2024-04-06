@@ -1,3 +1,7 @@
+import Brightness7Icon from "@mui/icons-material/Brightness7"; // Icono para representar el sol
+import Brightness3Icon from "@mui/icons-material/Brightness3";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import React from "react";
 import {
   Button,
@@ -15,7 +19,6 @@ import Toast from "../components/toast"; // Componente Toast para mostrar mensaj
 import { useHome } from "../domain/home/useHome";
 
 export default function EstimationTool() {
-
   const {
     showAlert,
     estimations,
@@ -24,18 +27,53 @@ export default function EstimationTool() {
     task,
     toast,
     ratingValue,
+    darkMode,
+    showDislikeFeedback,
+    dislikeClicked,
+    dislikeFeedback,
+    likeClicked,
+    imagen,
+    frase,
+    setDarkMode,
+    setDislikeClicked,
+    setLikeClicked,
+    setShowCopy,
+    setShowDislikeFeedback,
+    setShowEstimations,
+    setEstimations,
+    handleSubmitDislikeFeedbackAction,
+    handleLikeClickAction,
+    handleCloseDislikeFeedback,
+    toggleDarkMode,
     setShowAlert,
     setTask,
     setToast,
     handleEstimate,
     copyToClipboard,
     onChangeRating,
+    handleDisLikeClick,
+    setDislikeFeedback,
   } = useHome();
 
   return (
     <div>
       <div style={{ width: "100%", top: 20 }}>
         <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
+        <div
+          onClick={toggleDarkMode}
+          className={`toggle-button ${darkMode ? "dark-mode" : ""}`}
+        >
+          {/* Icono del sol a la izquierda */}
+          <Brightness7Icon />
+          {/* Icono de la luna a la derecha */}
+          <Brightness3Icon />
+          {/* Círculo deslizante */}
+          <div
+            className={`switch-slider ${
+              darkMode ? "switch-slider-active" : ""
+            }`}
+          ></div>
+        </div>
       </div>
       <div
         style={{
@@ -59,7 +97,16 @@ export default function EstimationTool() {
               </Button>
             </DialogActions>
           </Dialog>
-
+          <div>
+            <div className="image-container">
+              <img src={imagen} alt="Imagen del momento del día" />
+            </div>
+            <div className="frase-container" style={{ textAlign: "center" }}>
+              <p className="frase" style={{ marginTop: "20px" }}>
+                {frase}
+              </p>
+            </div>
+          </div>
           <TextField
             label="Ingrese su tarea"
             value={task}
@@ -107,9 +154,55 @@ export default function EstimationTool() {
                     margin: "16px 0",
                   }}
                 >
+                  {/* Botón de copiar */}
                   <IconButton onClick={copyToClipboard} aria-label="copy">
                     <ContentCopyIcon />
                   </IconButton>
+                  {/* Botón de Me gusta */}
+                  <IconButton onClick={handleLikeClickAction} aria-label="like">
+                    <ThumbUpIcon
+                      style={{ color: likeClicked ? "yellow" : "inherit" }}
+                    />
+                  </IconButton>
+                  <IconButton onClick={handleDisLikeClick} aria-label="dislike">
+                    <ThumbDownIcon
+                      style={{ color: dislikeClicked ? "yellow" : "inherit" }}
+                    />
+                  </IconButton>
+
+                  <Dialog
+                    open={showDislikeFeedback}
+                    onClose={handleCloseDislikeFeedback}
+                  >
+                    <DialogTitle>
+                      Cuéntanos por qué no te ha gustado la respuesta
+                    </DialogTitle>
+                    <DialogContent>
+                      <TextField
+                        label="Escribe tu comentario"
+                        value={dislikeFeedback}
+                        onChange={(e) => setDislikeFeedback(e.target.value)}
+                        fullWidth
+                        multiline
+                        rows={4}
+                        ariant="outlined"
+                      />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={handleCloseDislikeFeedback}
+                        color="primary"
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        onClick={handleSubmitDislikeFeedbackAction}
+                        color="primary"
+                      >
+                        Enviar
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               )}
               <div>

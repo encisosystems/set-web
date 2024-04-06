@@ -1,14 +1,36 @@
 import { useRef, useState } from "react";
 import { fetchEstimations, setRating } from "../../data/home/fetchEstimations";
+import { useDarkMode } from "./userDarkMode";
 
 export const useHome = () => {
+  const {
+    darkMode,
+    showDislikeFeedback,
+    dislikeClicked,
+    dislikeFeedback,
+    likeClicked,
+    setDarkMode,
+    setShowDislikeFeedback,
+    setDislikeClicked,
+    imagen,
+    frase,
+    setDislikeFeedback,
+    setLikeClicked,
+    handleCloseDislikeFeedback,
+    toggleDarkMode,
+    handleLikeClick,
+    handleSubmitDislikeFeedback,
+    handleDisLikeClick
+  } = useDarkMode();
+
   const [task, setTask] = useState("");
   const [estimations, setEstimations] = useState("");
   const [showEstimations, setShowEstimations] = useState(false);
   const [showCopy, setShowCopy] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [toast, setToast] = useState({ open: false, message: "" });
-  const id = useRef()
+
+  const id = useRef();
   const [ratingValue, setRatingValue] = useState(0);
 
   const handleEstimate = async () => {
@@ -23,7 +45,7 @@ export const useHome = () => {
       if (data.smart) {
         // Procesa y muestra las estimaciones si smart es true
         const tasksString = _getTasksStringSmart(data);
-        setEstimations(_getTotalEstimate(tasksString,data));
+        setEstimations(_getTotalEstimate(tasksString, data));
         setShowEstimations(true);
         setShowCopy(true);
       } else {
@@ -43,14 +65,47 @@ export const useHome = () => {
     }
   };
 
+ 
+  const handleLikeClickAction = () => {
+    handleLikeClick();
+    navigator.clipboard.writeText(estimations).then(() => {
+      setToast({
+              open: true,
+              message: "Te gusta la respuesta",
+      });
+  });
+  }
   
- const copyToClipboard = () => {
+  const handleSubmitDislikeFeedbackAction = () => {
+    handleSubmitDislikeFeedback();
+    setToast({ open: true, message: "¡Gracias por tu mensaje! :)" });
+  }
+
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(estimations).then(() => {
       setToast({
         open: true,
         message: "Estimaciones copiadas al portapapeles",
       });
     });
+  };
+
+  
+
+  const onChangeRating = async (_, newRating) => {
+    setRatingValue(newRating);
+    try {
+      setRating(id.current, newRating);
+      setToast({
+        open: true,
+        message: "Gracias por evaluar las Estimaciones",
+      });
+    } catch (error) {
+      console.error("Error fetching estimations:", error);
+      throw error;
+    }
+
+    // pendiente: llamar API para guardar el valor
   };
 
 
@@ -68,24 +123,7 @@ export const useHome = () => {
     )} horas`;
   };
 
-  
-  const onChangeRating = async (_, newRating) => {
-    setRatingValue(newRating)
-    try {
-        setRating(id.current,newRating)
-        setToast({
-            open: true,
-            message: "Gracias por evaluar las Estimaciones"
-        });
-    } catch (error) {
-        console.error('Error fetching estimations:', error);
-        throw error;
-    }
-
-
-    // pendiente: llamar API para guardar el valor
-}
-
+ 
   return {
     task,
     estimations,
@@ -93,6 +131,18 @@ export const useHome = () => {
     showCopy,
     showAlert,
     toast,
+    darkMode,
+    showDislikeFeedback,
+    dislikeClicked,
+    dislikeFeedback,
+    likeClicked,
+    setDarkMode,
+    setShowDislikeFeedback,
+    setDislikeClicked,
+    setLikeClicked,
+    imagen,
+    frase,
+    handleCloseDislikeFeedback,
     setTask,
     setEstimations,
     setShowEstimations,
@@ -101,6 +151,11 @@ export const useHome = () => {
     setToast,
     handleEstimate,
     copyToClipboard,
-    onChangeRating
+    onChangeRating,
+    toggleDarkMode,
+    handleLikeClickAction,
+    handleSubmitDislikeFeedbackAction,
+    handleDisLikeClick,
+    setDislikeFeedback
   };
 };
