@@ -96,7 +96,9 @@ export default function EstimationTool() {
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
-                <h1 style={{textAlign: 'center' ,}}>Simple Estimation Tool</h1>
+                <h1 style={{ textAlign: 'center'}}>
+                    <span style={{  fontFamily: 'Impact', color: '#1E196A'}}>Simple Estimation Tool</span>
+                </h1>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
@@ -121,7 +123,7 @@ export default function EstimationTool() {
                         fullWidth
                         margin="normal"
                         autoComplete="off"
-                        inputProps={{ style: { textAlign: 'center' } }} 
+                        inputProps={{ style: { textAlign: 'center', backgroundColor: 'white' } }} 
                     />
                     
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
@@ -143,7 +145,7 @@ export default function EstimationTool() {
                             fullWidth
                             margin="normal"
                             InputProps={{
-                                readOnly: true,
+                                readOnly: true, style: {backgroundColor: 'white'}
                             }}
                             variant="outlined"
                         />
