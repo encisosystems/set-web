@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import imagenPaute from "../assets/pauteaqui.jpg";
-import Bienvenida from "../components/Bienvenida";
+import GoogleADS from "../components/GoogleADS";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import Swal from "sweetalert2";
 import {
@@ -134,13 +134,8 @@ export default function EstimationTool() {
     <div>
       <div style={{ width: "100%", top: 20 }}>
         <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
-        <Bienvenida />
-        <ins class="adsbygoogle"
-     style={{display:"block"}}
-     data-ad-client="ca-pub-2780749763957723"
-     data-ad-slot="2587403147"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
+        <GoogleADS />
+   
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>

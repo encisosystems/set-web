@@ -6,8 +6,9 @@ import {
 } from "../../data/home/fetchEstimations";
 import { useDarkMode } from "./userDarkMode";
 import { useSpeechToText } from "./useSpeechToText";
-
+import Swal from "sweetalert2";
 export const useHome = () => {
+  const swal = Swal.mixin();
   const [task, setTask] = useState("");
   const {
     darkMode,
@@ -119,6 +120,25 @@ export const useHome = () => {
     // pendiente: llamar API para guardar el valor
   };
 
+  const handleModal= async () => {
+    const result = await swal.fire({
+      title: "Bienvenido a<br> Simple Estimation Tool",
+      confirmButtonText: "Continuemos",
+     
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      // Manejar la lógica de confirmación (por ejemplo, eliminación)
+      swal.fire({
+        title: "¿Qué hacemos en SET?",
+        text: "Es una herramienta diseñada para proporcionar al usuario estimaciones del tiempo necesario para completar tareas según los criterios SMART (Específicos, Medibles, Alcanzables, Relevantes y Temporales).",
+        
+      });
+    } 
+  };
+
+
   // funciones privadas
   const _getTasksStringSmart = (data) => {
     return data.estimation.tasks
@@ -132,6 +152,8 @@ export const useHome = () => {
       0
     )} horas`;
   };
+
+
 
   return {
     task,
@@ -171,5 +193,6 @@ export const useHome = () => {
     handleSubmitDislikeFeedbackAction,
     handleDisLikeClick,
     setDislikeFeedback,
+    handleModal
   };
 };
