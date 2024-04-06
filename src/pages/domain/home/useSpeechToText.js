@@ -29,10 +29,10 @@ export const useSpeechToText = () => {
   }, [browserSupportsSpeechRecognition]);
 
   useEffect(() => {
-
+    console.log("Gola re")
     if (browserSupportsSpeechRecognition) {;
       recognition.current.continuous = true;
-      recognition.current.interimResults = true;
+      recognition.current.interimResults = false;
       recognition.current.onresult = (event) => {
         console.log("record",event)
         const text = event.results[event.results.length - 1][0].transcript;

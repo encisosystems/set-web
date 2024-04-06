@@ -35,7 +35,7 @@ export const useHome = () => {
     setTranscript,
     stopRecording,
     handleMicClick,
-  } = useSpeechToText(setTask);
+  } = useSpeechToText();
 
 
   const [estimations, setEstimations] = useState("");
@@ -118,17 +118,6 @@ export const useHome = () => {
 
     // pendiente: llamar API para guardar el valor
   };
-
-
-/*   useEffect(() => {
-    console.log(isRecording,transcript)
-    if (!isRecording) {
-      setTask((prevTask) => prevTask + transcript);
-      setTranscript('');
-    }else {
-      setTask('');
-    }
-  }, [isRecording, transcript]); */
 
   // funciones privadas
   const _getTasksStringSmart = (data) => {
