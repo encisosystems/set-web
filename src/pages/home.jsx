@@ -28,9 +28,10 @@ import ShareIcon from "@mui/icons-material/Share";
 import { Facebook, WhatsApp, Email } from "@mui/icons-material";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
 import Dropdownn from "./ListaIdiomas";
+import { MicButton, useSpeechToText } from '../voice/voice-final';
 
 export default function EstimationTool() {
-    const API_URL = 'http://18.221.34.229'
+    const API_URL = 'http://18.221.34.229';
     const [task, setTask] = useState("");
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
@@ -45,7 +46,7 @@ export default function EstimationTool() {
     const [showDislikeFeedback, setShowDislikeFeedback] = useState(false); //mensajes cuando se da dislike
     const [dislikeFeedback, setDislikeFeedback] = useState("");
     const [darkMode, setDarkMode] = useState(false);
-
+    const { transcript, setTranscript, isRecording, stopRecording, handleMicClick } = useSpeechToText(setTask);
 
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
@@ -84,6 +85,7 @@ export default function EstimationTool() {
 
     const fetchEstimations = async () => {
         try {
+            
             const response = await fetch(
                 `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${idLanguage}`,
                 {
@@ -109,23 +111,26 @@ export default function EstimationTool() {
     };
     const handleClear = () => {
         setTask('');
+
+    const handleClear = () => {
+        stopRecording();
+        setTranscript("");
+        setTask("");
     };
+
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
         setShowLoading(true);
-        if (!task) {
+        if (!transcript && !task) {
             setShowAlert(true);
             setShowLoading(false);
             return;
         }
-
         fetchEstimations()
-        .then((data) => { 
+        .then((data) => {
             setShowLoading(false);
-            //console.log("Estimations:", data.smart);
             if (data.smart) {
-                // Procesa y muestra las estimaciones si smart es true
                 const tasksString = data.estimation.tasks
                 .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
                 .join("\n");
@@ -147,43 +152,13 @@ export default function EstimationTool() {
                     setShowEstimations(true);
                     setShowCopy(false);
                 }
-            })
-            .catch((error) => {
-                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-                setShowEstimations(true);
-                setShowLoading(false);
-                //console.log("Estimations:", data.smart);
-                if (data.smart) {
-                    // Procesa y muestra las estimaciones si smart es true
-                    const tasksString = data.estimation.tasks
-                        .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
-                        .join("\n");
-                    setEstimations(
-                        `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
-                            (acc, curr) => acc + curr.estimated_hours,
-                            0
-                        )} horas`
-                    );
-                    setShowEstimations(true);
-                    setShowCopy(true);
-                }
-                else {
-                    const tasksString = data.estimation.tasks
-                        .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
-                        .join("\n");
-
-                    setEstimations(tasksString);
-                    setShowEstimations(true);
-                    setShowLoading(false);
-                    setShowCopy(false); // Controla la visibilidad del botón de copia
-                }
-                setID(data.id)
-            })
-            .catch((error) => {
-                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-                setShowEstimations(true);
-                setShowCopy(false); // Ocultar el botón de copia en caso de error
-            });
+            setID(data.id)
+        })
+        .catch((error) => {
+            setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+            setShowEstimations(true);
+            setShowCopy(false);
+        });
     };
 
     const copyToClipboard = () => {
@@ -279,9 +254,8 @@ export default function EstimationTool() {
             console.error('Error fetching estimations:', error);
             throw error;
         }
-
-
-        // pendiente: llamar API para guardar el valor
+    };
+   // pendiente: llamar API para guardar el valor
     }
     
     return (
@@ -340,7 +314,7 @@ export default function EstimationTool() {
 
                     <TextField
                         label="Ingrese su tarea"
-                        value={task}
+                        value={transcript || task}
                         onChange={(e) => setTask(e.target.value)}
                         fullWidth
                         margin="normal"
@@ -351,6 +325,7 @@ export default function EstimationTool() {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
+                                    <MicButton isRecording={isRecording} handleClick={handleMicClick} />
                                     <Button onClick={handleClear} edge="end">
                                         <DeleteIcon />
                                     </Button>
@@ -461,7 +436,6 @@ export default function EstimationTool() {
                                 value={ratingValue}
                                 onChange={onChangeRating}
                             />
-
                         </div>
                     )}
 
