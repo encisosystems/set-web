@@ -27,6 +27,8 @@ export default function EstimationTool() {
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
     const [showCopy, setShowCopy] = useState(false);
+    const [historico, setHistorico] = useState("");   //Oscar Paez
+    const [mostrarHistorico, setMostrarHistorico] = useState(false);   //Oscar Paez
     const [showAlert, setShowAlert] = useState(false);
     const [id, setID] = useState(0);
     const [idLanguage, setIdLanguage] = useState(1);
@@ -63,6 +65,49 @@ export default function EstimationTool() {
         }
     };
     
+///Oscar Paez
+const verHistorial = async () => {
+    setShowEstimations(false);
+    setShowCopy(false);
+    
+
+    try {
+
+        //18.221.175.62
+        const historial = await fetch(
+            `${API_URL}/Consultas`,
+            {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+    
+        if (!historial.ok) {
+            throw new Error(`HTTP error! status: ${historial.status}`);
+        }
+    
+        const datah = await historial.json();
+        console.log("data:", datah);
+
+        // Creamos un string con los datos formateados
+        let historicos = 'Consultas Realizadas:\n';
+        datah.forEach(item => {
+            historicos += `ID: ${item.id}, Consulta: ${item.consulta}, Respuesta: ${item.respuesta}\n`;
+        });
+
+        setHistorico(historicos);
+        setMostrarHistorico(true);
+
+    } catch (error) {
+        console.error('Error fetching estimations:', error);
+        throw error;
+    } 
+};
+
+///Oscar Paez
+
     const handleLanguageChange = (selectedId) => {
         setIdLanguage(selectedId); // Actualiza el ID seleccionado
     };
@@ -340,6 +385,22 @@ export default function EstimationTool() {
                 <Dropdownn onLanguageChange={handleLanguageChange}/>
 
             </div>
+            {/* Oscar Paez */}
+            {mostrarHistorico &&(
+                        
+                        <TextField
+                            label="Historico"
+                            value={historico}
+                            multiline
+                            fullWidth
+                            margin="normal"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            variant="outlined"
+                        />
+                    )}  
+            {/* Oscar Paez */}
         </div>
     );
 }
