@@ -96,7 +96,7 @@ export default function EstimationTool() {
     return (
         <div>
             <div style={{ width: '100%', top: 20 }}>
-                <h1 style={{textAlign: 'center' }}>Simple Estimation Tool</h1>
+                <h1 style={{textAlign: 'center' ,}}>Simple Estimation Tool</h1>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
