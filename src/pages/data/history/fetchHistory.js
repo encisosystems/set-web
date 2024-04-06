@@ -1,3 +1,6 @@
+import axios from "axios";
+import { API_URL } from "../../constants/api";
+
 const historyMock = [
   {
     date: new Date().toLocaleDateString(),
@@ -69,3 +72,5 @@ export const fetchHistory = async (idUser) => {
     throw new Error("Error fetching estimations");
   }
 };
+
+

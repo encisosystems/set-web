@@ -17,6 +17,8 @@ export const fetchEstimations = async (task) => {
 export const setRating = async (id,newRating) => {
 
   try {
+
+
       const response = await fetch(
           `${API_URL}/API/estimations/${id}`,
           {
@@ -37,7 +39,30 @@ export const setRating = async (id,newRating) => {
       console.error('Error fetching estimations:', error);
       throw error;
   }
-
-
-  // pendiente: llamar API para guardar el valor
+  
+// pendiente: llamar API para guardar el valor
 }
+
+
+export const saveEstimation = async ({
+  id,
+  userId,
+  task,
+  stars,
+  estimation,
+}) => {
+  try {
+    const response = await axios.post(`${API_URL}/API/estimations/${id}`, {
+      id,
+      userId,
+      task,
+      stars,
+      estimation,
+    });
+    const data = await response.data;
+    console.log("data:", data);
+    return data;
+  } catch (error) {
+    throw Error("Ocurrio un Error");
+  }
+};
