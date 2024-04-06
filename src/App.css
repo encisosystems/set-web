@@ -2,9 +2,94 @@
   text-align: center;
 }
 
+
+
+.toggle-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 48px;
+  height: 26px;
+  border: 2px solid gray;
+  border-radius: 15px;
+  cursor: pointer;
+  overflow: hidden;
+  top: 30px;
+  right: 20px;
+}
+
+
+
+.toggle-button.dark-mode {
+  border-color: rgb(29, 24, 24);
+  background-color: rgb(41, 6, 71);
+  color: rgb(255, 251, 0);
+}
+
+.toggle-button:not(.dark-mode){
+  border-color: rgb(29, 24, 24);
+  background-color: rgb(41, 6, 71);
+  color: rgb(255, 251, 0);
+}
+
+.switch-slider {
+  position: absolute;
+  top: 50%;
+  left: 0; /* posición inicial */
+  transform: translate(-0%, -50%);
+  width: 26px; /* Ancho del botón slider */
+  height: 26px; /* Altura del botón slider */
+  border-radius: 50%; /* Para hacerlo circular */
+  background-color: #ffffff; /* Color de fondo del botón slider */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: left 0.3s; /* Transición suave al deslizar */
+}
+
+.switch-slider-active {
+  left: calc(100% - 26px); /* posición activa */
+}
+
+
+.image-container {
+  position: absolute;
+  right: 30px; /* Distancia desde el borde izquierdo */
+  top: 230px; /* Distancia desde la parte superior */
+}
+
+.image-container img {
+  width: 400px; /* Ancho de la imagen */
+  height: auto; /* Altura automática para mantener la proporción */
+  animation: floatAnimation 3s infinite alternate; /* Aplica la animación */
+}
+
+.frase-container {
+  position: absolute;
+  right: 40px; /* Ajusta la posición horizontal según sea necesario */
+  top: 650px; /* Ajusta la posición vertical según sea necesario */
+  width: 400px; /* Ancho de la frase */
+  text-align: center; /* Centra el texto */
+  animation: floatAnimation 8s infinite alternate; /* Aplica la animación */
+}
+
+.frase {
+  font-family: 'Montserrat', sans-serif; /* Cambia la fuente */
+  font-weight: bold; /* Cambia el grosor de la letra */
+  font-size: 22px; /* Cambia el tamaño de la letra */
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+@keyframes floatAnimation {
+  from {
+    transform: translateY(0); /* Posición inicial */
+  }
+  to {
+    transform: translateY(-10px); /* Posición final */
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

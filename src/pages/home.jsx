@@ -1,3 +1,6 @@
+import mañanaImage from './mañana.png';
+import tardeImage from './tarde.png';
+import nocheImage from './noche.png';
 import React, { useState,useEffect } from "react";
 import {
     Button,
@@ -16,6 +19,11 @@ import {
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp"; // Importa el icono del pulgar hacia arriba
+import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import Brightness7Icon from "@mui/icons-material/Brightness7"; // Icono para representar el sol
+import Brightness3Icon from "@mui/icons-material/Brightness3"; // Icono para representar la luna
 import ShareIcon from "@mui/icons-material/Share";
 import { Facebook, WhatsApp, Email } from "@mui/icons-material";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
@@ -32,6 +40,39 @@ export default function EstimationTool() {
     const [idLanguage, setIdLanguage] = useState(1);
     const [ratingValue, setRatingValue] = useState(0);
     const [toast, setToast] = useState({ open: false, message: "" });
+    const [likeClicked, setLikeClicked] = useState(false);  //creada para dar la seleccion "Yellow"
+    const [dislikeClicked, setDislikeClicked] = useState(false); 
+    const [showDislikeFeedback, setShowDislikeFeedback] = useState(false); //mensajes cuando se da dislike
+    const [dislikeFeedback, setDislikeFeedback] = useState("");
+    const [darkMode, setDarkMode] = useState(false);
+
+
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+    };
+
+    
+    const getHoraDelSistema = () => {
+        const horaActual = new Date().getHours();
+        let imagen;
+        let frase;
+      
+        if (horaActual >= 6 && horaActual < 12) {
+          imagen = mañanaImage;
+          frase = "¡Lo mejor siempre es planear en la mañana!";
+        } else if (horaActual >= 12 && horaActual < 18) {
+          imagen = tardeImage;
+          frase = "¡Despues de un lunch tambien comienzan los buenos proyectos!";
+        } else {
+          imagen = nocheImage;
+          frase = "¡Planear antes de comenzar un nuevo día nos ahorra mucho timepo!";
+        }
+      
+        return { imagen, frase };
+      };
+
+    const { imagen, frase } = getHoraDelSistema();
+      
     const [anchorEl, setAnchorEl] = useState(null);
     const [showLoading, setShowLoading] = useState(false);
 
@@ -154,6 +195,37 @@ export default function EstimationTool() {
         });
     };
 
+    const handleLikeClick = () => {
+        setLikeClicked(true);
+        setDislikeClicked(false);
+        navigator.clipboard.writeText(estimations).then(() => {
+            setToast({
+                    open: true,
+                    message: "Te gusta la respuesta",
+            });
+        });
+    };
+
+    const handleDisLikeClick = () => {
+        setDislikeClicked(true);
+        setLikeClicked(false);
+        setShowDislikeFeedback(true);
+    };
+
+    const handleCloseDislikeFeedback = () => {
+        setShowDislikeFeedback(false);
+    };
+    
+    const handleSubmitDislikeFeedback = () => {
+        // Aquí puedes realizar acciones con el feedback enviado, como enviarlo al servidor, etc.
+        console.log("Feedback:", dislikeFeedback);
+        setShowDislikeFeedback(false);
+        setDislikeFeedback(""); // Restablecer el estado del mensaje de dislike
+        setToast({ open: true, message: "¡Gracias por tu mensaje! :)" }); // Mostrar el toast de confirmación
+    }
+
+
+        
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -216,6 +288,14 @@ export default function EstimationTool() {
         <div>
             <div style={{ width: '100%', top: 20 }}>
                 <h1 style={{ textAlign: 'center' }}>Simple Estimation Tool</h1>
+                <div onClick={toggleDarkMode} className={`toggle-button ${darkMode ? 'dark-mode' : ''}`}>
+                    {/* Icono del sol a la izquierda */}
+                    <Brightness7Icon />
+                    {/* Icono de la luna a la derecha */} 
+                    <Brightness3Icon />
+                    {/* Círculo deslizante */}
+                    <div className={`switch-slider ${darkMode ? 'switch-slider-active' : ''}`}></div>
+                </div> 
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
@@ -232,6 +312,15 @@ export default function EstimationTool() {
                             </Button>
                         </DialogActions>
                     </Dialog>
+                    
+                    <div>
+                        <div className="image-container">
+                            <img src={imagen} alt="Imagen del momento del día" />
+                          </div>
+                          <div className="frase-container" style={{ textAlign: 'center' }}>
+                            <p className="frase" style={{ marginTop: '20px' }}>{frase}</p>
+                          </div>
+                    </div>              
 
                     <TextField
                         label="Ingrese su tarea"
@@ -281,10 +370,41 @@ export default function EstimationTool() {
                             />
                             {showCopy && (
                                 <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                                    <IconButton onClick={copyToClipboard} aria-label="copy">
-                                        <ContentCopyIcon />
-                                    </IconButton>
-                                </div>
+                                 {/* Botón de copiar */}
+                                 <IconButton onClick={copyToClipboard} aria-label="copy">
+                                    <ContentCopyIcon />
+                                </IconButton>
+                                {/* Botón de Me gusta */}
+                                <IconButton onClick={handleLikeClick} aria-label="like">
+                                    <ThumbUpIcon style={{ color: likeClicked ? 'yellow' : 'inherit' }} />
+                                </IconButton>     
+                                <IconButton onClick={handleDisLikeClick} aria-label="dislike">
+                                    <ThumbDownIcon style={{ color: dislikeClicked ? 'yellow' : 'inherit' }}/>
+                                </IconButton>  
+                                
+                                <Dialog open={showDislikeFeedback} onClose={handleCloseDislikeFeedback}>
+                                    <DialogTitle>Cuéntanos por qué no te ha gustado la respuesta</DialogTitle>
+                                    <DialogContent>
+                                     <TextField
+                                        label="Escribe tu comentario"
+                                        value={dislikeFeedback}
+                                        onChange={(e) => setDislikeFeedback(e.target.value)}
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                        ariant="outlined"
+                                        />
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleCloseDislikeFeedback} color="primary">
+                                            Cancelar
+                                        </Button>
+                                        <Button onClick={handleSubmitDislikeFeedback} color="primary">
+                                            Enviar
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>                                                                  
+                        </div> 
                             )}
                             {/* Botón de Compartir */}
                             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
@@ -343,3 +463,5 @@ export default function EstimationTool() {
         </div>
     );
 }
+
+
