@@ -1,4 +1,5 @@
 import React, { useState,useEffect } from "react";
+import logotipo from "../assets/logotipo.svg";
 import {
     Button,
     TextField,
@@ -214,8 +215,8 @@ export default function EstimationTool() {
     
     return (
         <div>
-            <div style={{ width: '100%', top: 20 }}>
-                <h1 style={{ textAlign: 'center' }}>Simple Estimation Tool</h1>
+            <div className="container" style={{ width: "100%", top: 20 }}>
+              <img className="logo-menu" src={logotipo} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
@@ -257,11 +258,17 @@ export default function EstimationTool() {
                         {showLoading && <LinearProgress />}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                        <Button
+                         <Button
                             onClick={handleEstimate}
                             variant="contained"
                             color="primary"
-                        >
+                            sx={{
+                              backgroundColor: "#0604A3", // Color verde
+                              "&:hover": {
+                                backgroundColor: "#940094", // Color verde más oscuro al hacer hover
+                              },
+                            }}
+                          >
                             Estimar
                         </Button>
                     </div>
