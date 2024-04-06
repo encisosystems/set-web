@@ -268,7 +268,9 @@ export default function EstimationTool() {
 
                     {showEstimations && (
                         <>
+                            <div id="imprimir">
                             <TextField
+
                                 label="Estimaciones"
                                 value={estimations}
                                 multiline
@@ -286,6 +288,7 @@ export default function EstimationTool() {
                                     </IconButton>
                                 </div>
                             )}
+                            </div>
                             {/* Botón de Compartir */}
                             <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
                                 <Button
@@ -315,8 +318,10 @@ export default function EstimationTool() {
                                     </MenuItem>
                                 </Menu>
                             </div>
+
                         </>
                     )}
+
                     {showEstimations && (
                         <div>
                             <h3>Evalua las estimaciones</h3>
@@ -328,7 +333,27 @@ export default function EstimationTool() {
 
                         </div>
                     )}
+                    {/* Botón de Impresión */}
+                    {showEstimations && (
+                        <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                    const printContents = document.getElementById('imprimir').innerHTML;
+                                    const originalContents = document.body.innerHTML;
 
+                                    document.body.innerHTML = printContents;
+
+                                    window.print();
+
+                                    document.body.innerHTML = originalContents;
+                                }}
+                            >
+                                Imprimir
+                            </Button>
+                        </div>
+                    )}
                     <Toast
                         open={toast.open}
                         message={toast.message}
