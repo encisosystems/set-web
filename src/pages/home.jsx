@@ -219,6 +219,22 @@ export default function EstimationTool() {
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
+                    <Dialog open={showAbout} onClose={() => setShowAbout(false)} maxWidth="xl" fullWidth
+                    PaperProps={{
+                        style: {
+                            backgroundColor: 'rgba(0, 0, 50, 0.95)' // Cambia el color de fondo aquí
+                        }
+                    }}>
+                        <DialogContent>
+                            <About />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setShowAbout(false)} style={{ color: 'white' }}>
+                                Cerrar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
                     <Dialog open={showAlert} onClose={() => setShowAlert(false)}>
                         <DialogTitle>Alerta</DialogTitle>
                         <DialogContent>
