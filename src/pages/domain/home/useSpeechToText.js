@@ -56,7 +56,7 @@ export const useSpeechToText = () => {
         recognition.current.stop();
       }
     };
-  }, [browserSupportsSpeechRecognition, startRecording, stopRecording]);
+  }, []);
 
   const handleLanguageChange = (event) => {
     if (languageSelector.current) {
