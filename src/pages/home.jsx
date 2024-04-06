@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import { About } from "./components/About"; // Importa el componente About
+import "./style.css"; // Importa tu archivo de estilos CSS
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
@@ -19,14 +21,16 @@ export default function EstimationTool() {
     const [showEstimations, setShowEstimations] = useState(false);
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [showAbout, setShowAbout] = useState(false); // Nuevo estado para controlar "Acerca de nosotros"
     const [toast, setToast] = useState({ open: false, message: "" });
     const [showLoading, setShowLoading] = useState(false);
+    
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
                 `http://18.221.34.229/API/chat?task=${encodeURIComponent(task)}`,
                 {
-                method: 'GET',
+                    method: 'GET',
                 }
             );
         
@@ -42,7 +46,7 @@ export default function EstimationTool() {
             throw error;
         }
     };
-  
+
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
@@ -87,7 +91,7 @@ export default function EstimationTool() {
             setShowEstimations(true);
             setShowCopy(false); // Ocultar el botón de copia en caso de error
         });  
-  };
+    };
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(estimations).then(() => {
@@ -102,9 +106,34 @@ export default function EstimationTool() {
         <div>
             <div style={{ width: '100%', top: 20 }}>
                 <h1 style={{textAlign: 'center' }}>Simple Estimation Tool</h1>
+                <div style={{ position: 'absolute', top: 10, right: 10 }}> {/* Estilo del botón "Acerca de nosotros" */}
+                    <Button
+                        variant="contained"
+                        className="about-button" // Agrega una clase al botón
+                        onClick={() => setShowAbout(true)}
+                    >
+                        Acerca de nosotros
+                    </Button>
+                </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
                 <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
+                    <Dialog open={showAbout} onClose={() => setShowAbout(false)} maxWidth="xl" fullWidth
+                    PaperProps={{
+                        style: {
+                            backgroundColor: 'rgba(0, 0, 50, 0.95)' // Cambia el color de fondo aquí
+                        }
+                    }}>
+                        <DialogContent>
+                            <About />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setShowAbout(false)} style={{ color: 'white' }}>
+                                Cerrar
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
                     <Dialog open={showAlert} onClose={() => setShowAlert(false)}>
                         <DialogTitle>Alerta</DialogTitle>
                         <DialogContent>
