@@ -1,0 +1,6 @@
+body {
+    background-image: url('/src/assets/Background.svg'); /* Asegúrate de que la ruta sea correcta */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
