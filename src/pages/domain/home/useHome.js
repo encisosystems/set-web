@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { fetchEstimations } from "../../data/home/fetchEstimations";
+import { useRef, useState } from "react";
+import { fetchEstimations, setRating } from "../../data/home/fetchEstimations";
 
 export const useHome = () => {
   const [task, setTask] = useState("");
@@ -8,7 +8,8 @@ export const useHome = () => {
   const [showCopy, setShowCopy] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [toast, setToast] = useState({ open: false, message: "" });
- 
+  const id = useRef()
+  const [ratingValue, setRatingValue] = useState(0);
 
   const handleEstimate = async () => {
     try {
@@ -34,6 +35,7 @@ export const useHome = () => {
         setShowEstimations(true);
         setShowCopy(false); // Controla la visibilidad del botón de copia
       }
+      id.current = data.id;
     } catch (error) {
       setEstimations(`Error al obtener las estimaciones: ${error.message}`);
       setShowEstimations(true);
@@ -52,7 +54,6 @@ export const useHome = () => {
   };
 
 
-
   // funciones privadas
   const _getTasksStringSmart = (data) => {
     return data.estimation.tasks
@@ -68,7 +69,22 @@ export const useHome = () => {
   };
 
   
+  const onChangeRating = async (_, newRating) => {
+    setRatingValue(newRating)
+    try {
+        setRating(id.current,newRating)
+        setToast({
+            open: true,
+            message: "Gracias por evaluar las Estimaciones"
+        });
+    } catch (error) {
+        console.error('Error fetching estimations:', error);
+        throw error;
+    }
 
+
+    // pendiente: llamar API para guardar el valor
+}
 
   return {
     task,
@@ -84,6 +100,7 @@ export const useHome = () => {
     setShowAlert,
     setToast,
     handleEstimate,
-    copyToClipboard
+    copyToClipboard,
+    onChangeRating
   };
 };

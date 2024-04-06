@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import {
   Button,
   TextField,
@@ -8,12 +8,14 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Rating,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast"; // Componente Toast para mostrar mensajes
 import { useHome } from "../domain/home/useHome";
 
 export default function EstimationTool() {
+
   const {
     showAlert,
     estimations,
@@ -21,14 +23,14 @@ export default function EstimationTool() {
     showEstimations,
     task,
     toast,
+    ratingValue,
     setShowAlert,
     setTask,
     setToast,
     handleEstimate,
-    copyToClipboard
+    copyToClipboard,
+    onChangeRating,
   } = useHome();
-
-
 
   return (
     <div>
@@ -110,6 +112,14 @@ export default function EstimationTool() {
                   </IconButton>
                 </div>
               )}
+              <div>
+                <h3>Evalua las estimaciones</h3>
+                <Rating
+                  name="rating"
+                  value={ratingValue}
+                  onChange={onChangeRating}
+                />
+              </div>
             </>
           )}
 

@@ -12,3 +12,32 @@ export const fetchEstimations = async (task) => {
       throw new Error("Error fetching estimations");
     }
   }
+
+
+export const setRating = async (id,newRating) => {
+
+  try {
+      const response = await fetch(
+          `${API_URL}/API/estimations/${id}`,
+          {
+              method: 'POST',
+              body: JSON.stringify({
+                  'stars': newRating,
+              }),
+              headers: {
+                  "Content-Type": "application/json",
+              },
+          }
+      );
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+  } catch (error) {
+      console.error('Error fetching estimations:', error);
+      throw error;
+  }
+
+
+  // pendiente: llamar API para guardar el valor
+}
