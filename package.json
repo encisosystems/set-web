@@ -16,6 +16,7 @@
     "match-sorter": "^6.3.4",
     "bootstrap": "^5.3.3",
     "react": "^18.2.0",
+    "react-adsense": "^0.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
@@ -23,6 +24,7 @@
     "react-toastify": "^10.0.4",
     "sort-by": "^1.2.0",
     "reactstrap": "^9.2.2",
+    "sweetalert2": "^11.10.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

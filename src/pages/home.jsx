@@ -1,21 +1,18 @@
-import mañanaImage from './mañana.png';
-import tardeImage from './tarde.png';
-import nocheImage from './noche.png';
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
+import Footer from "../components/Footer";
+import imagenPaute from "../assets/pauteaqui.jpg";
+import Bienvenida from "../components/Bienvenida";
+import LiveHelpIcon from "@mui/icons-material/LiveHelp";
+import Swal from "sweetalert2";
 import {
-    Button,
-    TextField,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    IconButton,
-    Menu,
-    MenuItem,
-    InputAdornment,
-    Rating,
-    LinearProgress
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -31,427 +28,236 @@ import Dropdownn from "./ListaIdiomas";
 import { MicButton, useSpeechToText } from '../voice/voice-final';
 
 export default function EstimationTool() {
-    const API_URL = 'http://18.221.34.229';
-    const [task, setTask] = useState("");
-    const [estimations, setEstimations] = useState("");
-    const [showEstimations, setShowEstimations] = useState(false);
-    const [showCopy, setShowCopy] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const [id, setID] = useState(0);
-    const [idLanguage, setIdLanguage] = useState(1);
-    const [ratingValue, setRatingValue] = useState(0);
-    const [toast, setToast] = useState({ open: false, message: "" });
-    const [likeClicked, setLikeClicked] = useState(false);  //creada para dar la seleccion "Yellow"
-    const [dislikeClicked, setDislikeClicked] = useState(false); 
-    const [showDislikeFeedback, setShowDislikeFeedback] = useState(false); //mensajes cuando se da dislike
-    const [dislikeFeedback, setDislikeFeedback] = useState("");
-    const [darkMode, setDarkMode] = useState(false);
-    const { transcript, setTranscript, isRecording, stopRecording, handleMicClick } = useSpeechToText(setTask);
 
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-    };
+  const swal = Swal.mixin();
+  const [task, setTask] = useState("");
+  const [estimations, setEstimations] = useState("");
+  const [showEstimations, setShowEstimations] = useState(false);
+  const [showCopy, setShowCopy] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [toast, setToast] = useState({ open: false, message: "" });
 
-    
-    const getHoraDelSistema = () => {
-        const horaActual = new Date().getHours();
-        let imagen;
-        let frase;
-      
-        if (horaActual >= 6 && horaActual < 12) {
-          imagen = mañanaImage;
-          frase = "¡Lo mejor siempre es planear en la mañana!";
-        } else if (horaActual >= 12 && horaActual < 18) {
-          imagen = tardeImage;
-          frase = "¡Despues de un lunch tambien comienzan los buenos proyectos!";
-        } else {
-          imagen = nocheImage;
-          frase = "¡Planear antes de comenzar un nuevo día nos ahorra mucho timepo!";
+  const fetchEstimations = async () => {
+    try {
+      const response = await fetch(
+        `http://18.221.175.62/API/chat?task=${encodeURIComponent(task)}`,
+        {
+          method: "GET",
         }
-      
-        return { imagen, frase };
-      };
+      );
 
-    const { imagen, frase } = getHoraDelSistema();
-      
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [showLoading, setShowLoading] = useState(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-
-    
-    useEffect(() => {
-    }, [idLanguage]);
-
-
-    const fetchEstimations = async () => {
-        try {
-            
-            const response = await fetch(
-                `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${idLanguage}`,
-                {
-                    method: 'GET',
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log("data:", data);
-            return data;
-        } catch (error) {
-            console.error('Error fetching estimations:', error);
-            throw error;
-        }
-    };
-    
-    const handleLanguageChange = (selectedId) => {
-        setIdLanguage(selectedId); // Actualiza el ID seleccionado
-    };
-    const handleClear = () => {
-        setTask('');
-
-    const handleClear = () => {
-        stopRecording();
-        setTranscript("");
-        setTask("");
-    };
-
-    const handleEstimate = () => {
-        setShowEstimations(false);
-        setShowCopy(false);
-        setShowLoading(true);
-        if (!transcript && !task) {
-            setShowAlert(true);
-            setShowLoading(false);
-            return;
-        }
-        fetchEstimations()
-        .then((data) => {
-            setShowLoading(false);
-            if (data.smart) {
-                const tasksString = data.estimation.tasks
-                .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
-                .join("\n");
-                setEstimations(
-                    `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
-                        (acc, curr) => acc + curr.estimated_hours,
-                        0
-                    )} horas`
-                );
-                setShowEstimations(true);
-                setShowCopy(true);
-            }
-            else {
-                const tasksString = data.estimation.tasks
-                .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
-                .join("\n");
-
-                    setEstimations(tasksString);
-                    setShowEstimations(true);
-                    setShowCopy(false);
-                }
-            setID(data.id)
-        })
-        .catch((error) => {
-            setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-            setShowEstimations(true);
-            setShowCopy(false);
-        });
-    };
-
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(estimations).then(() => {
-            setToast({
-                open: true,
-                message: "Estimaciones copiadas al portapapeles",
-            });
-        });
-    };
-
-    const handleLikeClick = () => {
-        setLikeClicked(true);
-        setDislikeClicked(false);
-        navigator.clipboard.writeText(estimations).then(() => {
-            setToast({
-                    open: true,
-                    message: "Te gusta la respuesta",
-            });
-        });
-    };
-
-    const handleDisLikeClick = () => {
-        setDislikeClicked(true);
-        setLikeClicked(false);
-        setShowDislikeFeedback(true);
-    };
-
-    const handleCloseDislikeFeedback = () => {
-        setShowDislikeFeedback(false);
-    };
-    
-    const handleSubmitDislikeFeedback = () => {
-        // Aquí puedes realizar acciones con el feedback enviado, como enviarlo al servidor, etc.
-        console.log("Feedback:", dislikeFeedback);
-        setShowDislikeFeedback(false);
-        setDislikeFeedback(""); // Restablecer el estado del mensaje de dislike
-        setToast({ open: true, message: "¡Gracias por tu mensaje! :)" }); // Mostrar el toast de confirmación
+      const data = await response.json();
+      console.log("data:", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching estimations:", error);
+      throw error;
     }
+  };
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2780749763957723"
+     crossorigin="anonymous"></script>
+  
+  const handleModal= async () => {
+    const result = await swal.fire({
+      title: "Bienvenido a<br> Simple Estimation Tool",
+      confirmButtonText: "Continuemos",
+     
+      reverseButtons: true,
+    });
 
-
+    if (result.isConfirmed) {
+      // Manejar la lógica de confirmación (por ejemplo, eliminación)
+      swal.fire({
+        title: "¿Qué hacemos en SET?",
+        text: "Es una herramienta diseñada para proporcionar al usuario estimaciones del tiempo necesario para completar tareas según los criterios SMART (Específicos, Medibles, Alcanzables, Relevantes y Temporales).",
         
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+      });
+    } 
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
 
-    const shareFacebook = () => {
-        const shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(estimations)}`;
-        window.open(shareURL, '_blank');
-    };
-
-    const shareWhatsApp = () => {
-        const shareURL = `https://api.whatsapp.com/send?text=${encodeURIComponent(estimations)}`;
-        window.open(shareURL, '_blank');
-    };
-
-    const shareGmail = () => {
-        const subject = "Estimaciones"; // Asunto del correo electrónico
-        const body = estimations; // Contenido del correo electrónico
-        const shareURL = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.open(shareURL);
-    };
-
-    const onChangeRating = async (event, newRating) => {
-        setRatingValue(newRating)
-        console.log(newRating)
-        try {
-            const response = await fetch(
-                `${API_URL}/API/estimations/${id}`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        'stars': newRating,
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            setToast({
-                open: true,
-                message: "Gracias por evaluar las Estimaciones"
-            });
-        } catch (error) {
-            console.error('Error fetching estimations:', error);
-            throw error;
-        }
-    };
-   // pendiente: llamar API para guardar el valor
+  const handleEstimate = () => {
+    setShowEstimations(false);
+    setShowCopy(false);
+    if (!task) {
+      setShowAlert(true);
+      return;
     }
-    
-    return (
-        <div>
-            <div style={{ width: '100%', top: 20 }}>
-                <h1 style={{ textAlign: 'center' }}>Simple Estimation Tool</h1>
-                <div onClick={toggleDarkMode} className={`toggle-button ${darkMode ? 'dark-mode' : ''}`}>
-                    {/* Icono del sol a la izquierda */}
-                    <Brightness7Icon />
-                    {/* Icono de la luna a la derecha */} 
-                    <Brightness3Icon />
-                    {/* Círculo deslizante */}
-                    <div className={`switch-slider ${darkMode ? 'switch-slider-active' : ''}`}></div>
-                </div> 
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '85vh' }}>
-                <div style={{ padding: 16, maxWidth: 800, width: '100%' }}>
-                    <Dialog open={showAbout} onClose={() => setShowAbout(false)} maxWidth="xl" fullWidth
-                    PaperProps={{
-                        style: {
-                            backgroundColor: 'rgba(0, 0, 50, 0.95)' // Cambia el color de fondo aquí
-                        }
-                    }}>
-                        <DialogContent>
-                            <About />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setShowAbout(false)} style={{ color: 'white' }}>
-                                Cerrar
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
 
-                    <Dialog open={showAlert} onClose={() => setShowAlert(false)}>
-                        <DialogTitle>Alerta</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                Por favor, ingrese una tarea antes de obtener la estimación.
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setShowAlert(false)} color="primary">
-                                OK
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                    
-                    <div>
-                        <div className="image-container">
-                            <img src={imagen} alt="Imagen del momento del día" />
-                          </div>
-                          <div className="frase-container" style={{ textAlign: 'center' }}>
-                            <p className="frase" style={{ marginTop: '20px' }}>{frase}</p>
-                          </div>
-                    </div>              
+    fetchEstimations()
+      .then((data) => {
+        //console.log("Estimations:", data.smart);
+        if (data.smart) {
+          // Procesa y muestra las estimaciones si smart es true
+          const tasksString = data.estimation.tasks
+            .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
+            .join("\n");
+          setEstimations(
+            `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
+              (acc, curr) => acc + curr.estimated_hours,
+              0
+            )} horas`
+          );
+          setShowEstimations(true);
+          setShowCopy(true);
+        } else {
+          const tasksString = data.estimation.tasks
+            .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
+            .join("\n");
 
-                    <TextField
-                        label="Ingrese su tarea"
-                        value={transcript || task}
-                        onChange={(e) => setTask(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                        autoComplete="off"
-                        inputProps={{ style: { textAlign: 'center' } }}
-                        multiline
-                        rowsMax={10}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <MicButton isRecording={isRecording} handleClick={handleMicClick} />
-                                    <Button onClick={handleClear} edge="end">
-                                        <DeleteIcon />
-                                    </Button>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <div>
-                        {showLoading && <LinearProgress />}
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                        <Button
-                            onClick={handleEstimate}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Estimar
-                        </Button>
-                    </div>
+          setEstimations(tasksString);
+          setShowEstimations(true);
+          setShowCopy(false); // Controla la visibilidad del botón de copia
+        }
+      })
+      .catch((error) => {
+        setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+        setShowEstimations(true);
+        setShowCopy(false); // Ocultar el botón de copia en caso de error
+      });
+  };
 
-                    {showEstimations && (
-                        <>
-                            <TextField
-                                label="Estimaciones"
-                                value={estimations}
-                                multiline
-                                fullWidth
-                                margin="normal"
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                variant="outlined"
-                            />
-                            {showCopy && (
-                                <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                                 {/* Botón de copiar */}
-                                 <IconButton onClick={copyToClipboard} aria-label="copy">
-                                    <ContentCopyIcon />
-                                </IconButton>
-                                {/* Botón de Me gusta */}
-                                <IconButton onClick={handleLikeClick} aria-label="like">
-                                    <ThumbUpIcon style={{ color: likeClicked ? 'yellow' : 'inherit' }} />
-                                </IconButton>     
-                                <IconButton onClick={handleDisLikeClick} aria-label="dislike">
-                                    <ThumbDownIcon style={{ color: dislikeClicked ? 'yellow' : 'inherit' }}/>
-                                </IconButton>  
-                                
-                                <Dialog open={showDislikeFeedback} onClose={handleCloseDislikeFeedback}>
-                                    <DialogTitle>Cuéntanos por qué no te ha gustado la respuesta</DialogTitle>
-                                    <DialogContent>
-                                     <TextField
-                                        label="Escribe tu comentario"
-                                        value={dislikeFeedback}
-                                        onChange={(e) => setDislikeFeedback(e.target.value)}
-                                        fullWidth
-                                        multiline
-                                        rows={4}
-                                        ariant="outlined"
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={handleCloseDislikeFeedback} color="primary">
-                                            Cancelar
-                                        </Button>
-                                        <Button onClick={handleSubmitDislikeFeedback} color="primary">
-                                            Enviar
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>                                                                  
-                        </div> 
-                            )}
-                            {/* Botón de Compartir */}
-                            <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-                                <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={handleClick}
-                                >
-                                    <ShareIcon />
-                                    Compartir
-                                </Button>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                >
-                                    <MenuItem onClick={shareFacebook}>
-                                        <Facebook style={{ marginRight: '8px' }} />
-                                        Compartir en Facebook
-                                    </MenuItem>
-                                    <MenuItem onClick={shareWhatsApp}>
-                                        <WhatsApp style={{ marginRight: '8px' }} />
-                                        Compartir en WhatsApp
-                                    </MenuItem>
-                                    <MenuItem onClick={shareGmail}>
-                                        <Email style={{ marginRight: '8px' }} />
-                                        Enviar por Gmail
-                                    </MenuItem>
-                                </Menu>
-                            </div>
-                        </>
-                    )}
-                    {showEstimations && (
-                        <div>
-                            <h3>Evalua las estimaciones</h3>
-                            <Rating
-                                name="rating"
-                                value={ratingValue}
-                                onChange={onChangeRating}
-                            />
-                        </div>
-                    )}
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(estimations).then(() => {
+      setToast({
+        open: true,
+        message: "Estimaciones copiadas al portapapeles",
+      });
+    });
+  };
 
-                    <Toast
-                        open={toast.open}
-                        message={toast.message}
-                        onClose={() => setToast({ ...toast, open: false })}
-                    />
-                </div>
-            </div>
-            <div className="container" style={{ position: 'absolute', top: '10px', left: '10px' }}>
-                <Dropdownn onLanguageChange={handleLanguageChange}/>
-
-            </div>
+  return (
+    <div>
+      <div style={{ width: "100%", top: 20 }}>
+        <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
+        <Bienvenida />
+        <ins class="adsbygoogle"
+     style={{display:"block"}}
+     data-ad-client="ca-pub-2780749763957723"
+     data-ad-slot="2587403147"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+        <div
+          style={{
+            width: "50%",
+            height: "300px",
+            backgroundColor: "red",
+            margin: "0 auto",
+          }}
+        >
+  
+          <img
+            style={{ width: "100%", height: "100%" }}
+            src={imagenPaute}
+            alt=""
+          />
         </div>
-    );
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "25vh",
+        }}
+      >
+        <div style={{ padding: 16, maxWidth: 800, width: "100%" }}>
+          <Dialog open={showAlert} onClose={() => setShowAlert(false)}>
+            <DialogTitle>Alerta</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Por favor, ingrese una tarea antes de obtener la estimación.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setShowAlert(false)} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+          
+          <div style={{display: "flex",gap:"3px",alignItems:"baseline"}}>
+          <TextField
+            label="Ingrese su tarea"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            fullWidth
+            margin="normal"
+            autoComplete="off"
+            inputProps={{ style: { textAlign: "center" } }}
+          />
+          <span >
+            <IconButton onClick={handleModal}>
+              <LiveHelpIcon />
+            </IconButton>
+          </span>
+          </div>
+          
+ 
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "16px 0",
+            }}
+            >
+          
+            <Button
+              onClick={handleEstimate}
+              variant="contained"
+              color="primary"
+            >
+              Estimar
+            </Button>
+          </div>
+
+          {showEstimations && (
+            <>
+              <TextField
+                label="Estimaciones"
+                value={estimations}
+                multiline
+                fullWidth
+                margin="normal"
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+              />
+              {showCopy && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: "16px 0",
+                  }}
+                >
+                  <IconButton onClick={copyToClipboard} aria-label="copy">
+                    <ContentCopyIcon />
+                  </IconButton>
+                </div>
+              )}
+            </>
+          )}
+
+          <Toast
+            open={toast.open}
+            message={toast.message}
+            onClose={() => setToast({ ...toast, open: false })}
+          />
+        </div>
+      </div>
+      <Footer></Footer>
+    </div>
+  );
 }
 
 
