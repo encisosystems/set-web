@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import { useTranslation } from 'react-i18next';
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
@@ -19,7 +20,7 @@ export default function EstimationTool() {
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [toast, setToast] = useState({ open: false, message: "" });
-  
+    const {t} = useTranslation()
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
@@ -130,7 +131,7 @@ export default function EstimationTool() {
                             variant="contained"
                             color="primary"
                         >
-                            Estimar
+                            {t('ESTIMATE_BUTTON')}
                         </Button>
                     </div>
 
