@@ -16,6 +16,7 @@ const fetchUser = async (data, path) => {
         );
     
         if (!response.ok) {
+            alert ("Hubo un error creando el usuario")
             throw new Error(`HTTP error! status: ${response}`);
         }
     
@@ -23,8 +24,7 @@ const fetchUser = async (data, path) => {
         console.log("data:", res);
         return res;
     } catch (error) {
-        console.error('Error creating the user:', error);
-        throw error;
+        console.error('Error during the process:', error);
     }
 };
 
@@ -54,7 +54,13 @@ export const LoginModal = ({handleOpen, handleLogin}) => {
             username: username,
             password: password
         }
-        await fetchUser(data, 'login')
+        const res = await fetchUser(data, 'login');
+        if (res.username !== null){
+            alert("Sesión iniciada");
+            handleOpen();
+        } else {
+            alert("Por favor revise sus credenciales");
+        }
     }
 
     return (
@@ -94,7 +100,11 @@ export const RegisterModal = ({handleOpen, handleLogin}) => {
             username: username,
             password: password
         }
-        await fetchUser(data, 'register');
+        const res = await fetchUser(data, 'register');
+        if (res){
+            alert("Usuario registrado");
+            handleOpen();
+        }
     }
 
     return (
