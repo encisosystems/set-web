@@ -1,7 +1,33 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { Button, FormControl, FormLabel, TextField } from "@mui/material";
+
+const fetchUser = async (data, path) => {
+    try {
+        const response = await fetch(
+            `http://127.0.0.1:8080/API/`+path,
+            {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+            }
+        );
     
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response}`);
+        }
+    
+        const res = await response.json();
+        console.log("data:", res);
+        return res;
+    } catch (error) {
+        console.error('Error creating the user:', error);
+        throw error;
+    }
+};
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -23,12 +49,12 @@ export const LoginModal = ({handleOpen, handleLogin}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const data = {
             username: username,
             password: password
         }
-        console.log(data);
+        await fetchUser(data, 'login')
     }
 
     return (
@@ -61,14 +87,14 @@ export const RegisterModal = ({handleOpen, handleLogin}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const data = {
             first_name: first_name,
             last_name: last_name,
             username: username,
             password: password
         }
-        console.log(data);
+        await fetchUser(data, 'register');
     }
 
     return (
