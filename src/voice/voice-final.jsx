@@ -10,7 +10,7 @@ export const useSpeechToText = (setTask) => {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const browserSupportsSpeechRecognition = SpeechRecognition !== undefined;
 
-  const startRecording = useCallback(() => {
+  /*const startRecording = useCallback(() => {
     if (browserSupportsSpeechRecognition) {
       if (languageSelector.current) {
         recognition.current.lang = languageSelector.current.value;
@@ -18,7 +18,19 @@ export const useSpeechToText = (setTask) => {
       recognition.current.start();
       setIsRecording(true);
     }
-  }, [browserSupportsSpeechRecognition, languageSelector]);
+  }, [browserSupportsSpeechRecognition, languageSelector]);*/
+
+  // Función para iniciar la grabación de voz
+  const startRecording = useCallback(() => {
+    if (browserSupportsSpeechRecognition) {
+      if (recognition.current) {
+        recognition.current.lang = selectedLanguage.current; // Establece el idioma seleccionado
+        recognition.current.start(); // Inicia la grabación de voz
+        setIsRecording(true); // Actualiza el estado de grabación
+      }
+    }
+  }, [browserSupportsSpeechRecognition, selectedLanguage]);
+
 
   const stopRecording = useCallback(() => {
     if (browserSupportsSpeechRecognition) {

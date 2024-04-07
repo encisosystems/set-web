@@ -13,13 +13,12 @@ export const useSpeechToText = () => {
 
   const startRecording = useCallback(() => {
     if (browserSupportsSpeechRecognition) {
-      if (languageSelector.current) {
-        recognition.current.lang = languageSelector.current.value;
-      }
+      setTranscript('');
+      recognition.current.lang = selectedLanguage; 
       recognition.current.start();
       setIsRecording(true);
     }
-  }, [browserSupportsSpeechRecognition, languageSelector]);
+  }, [browserSupportsSpeechRecognition, selectedLanguage]);
 
   const stopRecording = useCallback(() => {
     if (browserSupportsSpeechRecognition) {
