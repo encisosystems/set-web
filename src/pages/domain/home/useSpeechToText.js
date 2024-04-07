@@ -1,20 +1,20 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
-
 export const useSpeechToText = () => {
   const [transcript, setTranscript] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('es-ES');
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; // Idioma predeterminado (español)
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = useRef(new SpeechRecognition());
   const languageSelector = useRef(null);
-
   const browserSupportsSpeechRecognition = SpeechRecognition !== undefined;
+  const inactivityTimeout = useRef(null); // Referencia al temporizador de inactividad
+  const inactivityTimeoutDuration = 4000; // Duración del temporizador en milisegundos (5 segundos en este ejemplo)
 
   const startRecording = useCallback(() => {
     if (browserSupportsSpeechRecognition) {
       setTranscript('');
-      recognition.current.lang = selectedLanguage; 
+      recognition.current.lang = selectedLanguage;
       recognition.current.start();
       setIsRecording(true);
     }
@@ -28,15 +28,21 @@ export const useSpeechToText = () => {
   }, [browserSupportsSpeechRecognition]);
 
   useEffect(() => {
-    if (browserSupportsSpeechRecognition) {;
+    if (browserSupportsSpeechRecognition) {
       recognition.current.continuous = true;
       recognition.current.interimResults = false;
+
       recognition.current.onresult = (event) => {
-        console.log("record",event)
         const text = event.results[event.results.length - 1][0].transcript;
-        console.log('Texto reconocido:', text);
-        setTranscript(prev => prev + text);
+        setTranscript((prev) => prev + text);
+
+        // Reiniciar el temporizador de inactividad
+        clearTimeout(inactivityTimeout.current);
+        inactivityTimeout.current = setTimeout(() => {
+          stopRecording();
+        }, inactivityTimeoutDuration);
       };
+
       recognition.current.onend = () => {
         setIsRecording(false);
       };
@@ -53,6 +59,7 @@ export const useSpeechToText = () => {
       if (recognition.current) {
         recognition.current.stop();
       }
+      clearTimeout(inactivityTimeout.current); // Limpiar el temporizador al desmontar el componente
     };
   }, []);
 
@@ -71,7 +78,6 @@ export const useSpeechToText = () => {
       startRecording();
     }
   };
-
 
   return {
     transcript,
