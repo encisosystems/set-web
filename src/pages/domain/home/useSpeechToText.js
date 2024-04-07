@@ -29,7 +29,6 @@ export const useSpeechToText = () => {
   }, [browserSupportsSpeechRecognition]);
 
   useEffect(() => {
-    console.log("Gola re")
     if (browserSupportsSpeechRecognition) {;
       recognition.current.continuous = true;
       recognition.current.interimResults = false;

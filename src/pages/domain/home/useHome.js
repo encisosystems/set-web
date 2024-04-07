@@ -89,6 +89,13 @@ export const useHome = () => {
     });
   };
 
+  // (papelera) Función para limpiar la tarea y el texto transcrito 
+  const handleClear = () => {
+    stopRecording(); // Detiene la grabación de voz
+    setTranscript(""); // Limpia el texto transcrito
+    setTask(""); // Limpia la tarea
+};
+
   const handleSubmitDislikeFeedbackAction = () => {
     handleSubmitDislikeFeedback();
     setToast({ open: true, message: "¡Gracias por tu mensaje! :)" });
@@ -171,5 +178,6 @@ export const useHome = () => {
     handleSubmitDislikeFeedbackAction,
     handleDisLikeClick,
     setDislikeFeedback,
+    handleClear,
   };
 };

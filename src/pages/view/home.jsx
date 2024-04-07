@@ -39,7 +39,6 @@ export default function EstimationTool() {
     frase,
     handleMicClick,
     isRecording,
-    handleClear,
     setTranscript,
     stopRecording,
     transcript,
@@ -62,6 +61,7 @@ export default function EstimationTool() {
     onChangeRating,
     handleDisLikeClick,
     setDislikeFeedback,
+    handleClear,//papelera
   } = useHome();
 
   return (
