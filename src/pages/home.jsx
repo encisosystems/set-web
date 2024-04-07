@@ -274,10 +274,7 @@ export default function EstimationTool() {
                     />
                 </div>
             </div>
-            {/* Dropdownn */}
-            <div className="container" style={{ position: 'absolute', top:'10px',left:'10px'}}>
-               <Dropdownn />
-             </div>
+
         </div>
     );
 }
