@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Image1 from "./../images/Frontend.png";
 import Image2 from "./../images/developers.png";
 import Image3 from "./../images/Backend.png";
@@ -26,32 +25,44 @@ export const About = () => {
           <button className={styles.backButton} onClick={toggleFrontend}>
             &#8592;
           </button>
-          <h2 className={styles.aboutItems}>Frontend</h2>
-          <p>Hola, ¿cómo estás?</p>
+          {
+            usersFrontend.map((user,index) => <div key={index}>
+              <p>
+                <span
+                  style={{
+                    color: "#000",
+                    fontSize: "24px", 
+                    fontWeight: "bold"
+                  }}  
+                >
+                  {user.name}
+                </span>
+              </p>
+              <p style={{ color: "black", fontSize: "20px"}}>
+                {user.description}
+              </p>
+            </div>)
+           }
         </div>
       ) : showBackend ? (
         <div className={styles.backendContainer}>
           <button className={styles.backButton} onClick={toggleBackend}>
             &#8592;
           </button>
-          <h2 className={styles.aboutItems}>Backend</h2>
            {
             usersBackend.map((user,index) => <div key={index}>
               <p>
                 <span
                   style={{
-                    color: "blue",
-                    border: "2px solid blue",
-                    borderRadius: "10px",
-                    padding: "5px",
-                    backgroundColor: "white",
-                    display: "inline-block",
-                  }}
+                    color: "#000",
+                    fontSize: "24px", 
+                    fontWeight: "bold"
+                  }}                                             
                 >
                   {user.name}
                 </span>
               </p>
-              <p style={{ color: "white" }}>
+              <p style={{ color: "black", fontSize: "20px"}}>
                 {user.description}
               </p>
             </div>)
@@ -61,33 +72,33 @@ export const About = () => {
         <div className={styles.content}>
           <img
             src={Image2}
-            alt="Me sitting with a laptop"
+            alt="Developers"
             className={styles.aboutImage}
           />
           <ul className={styles.aboutItems}>
             <li className={styles.aboutItem} onClick={toggleFrontend}>
               <img
                 src={Image1}
-                alt="Cursor icon"
+                alt="Frontend"
                 className={styles.aboutImage}
               />
               <div className={styles.aboutItemText}>
-                <h3>Frontend Developers</h3>
+                <h3>Desarrolladores Frontend</h3>
                 <p>
                   Aqui encontrarás las contribuciones del equipo de desarrollo
                   de la web SET en su mejora y optimización desde el apartado
-                  Backend
+                  Backend.
                 </p>
               </div>
             </li>
             <li className={styles.aboutItem} onClick={toggleBackend}>
               <img
                 src={Image3}
-                alt="Server icon"
+                alt="Backend"
                 className={styles.aboutImage}
               />
               <div className={styles.aboutItemText}>
-                <h3>Backend Developers</h3>
+                <h3>Desarroladores Backend</h3>
                 <p>
                   Aquí encontrarás las contribuciones del equipo de desarrollo
                   de la web SET en su mejora del apartado visual desde el
