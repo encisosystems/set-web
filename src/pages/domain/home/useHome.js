@@ -6,6 +6,7 @@ import {
 } from "../../data/home/fetchEstimations";
 import { useDarkMode } from "./userDarkMode";
 import { useSpeechToText } from "./useSpeechToText";
+import { LanguageSelector } from "./LanguageSelector";
 
 export const useHome = () => {
   const [task, setTask] = useState("");
@@ -29,13 +30,14 @@ export const useHome = () => {
     handleDisLikeClick,
   } = useDarkMode();
 
+  const [selectedLanguage, setSelectedLanguage] = useState('es-ES');
   const {
     transcript,
     isRecording,
     setTranscript,
     stopRecording,
     handleMicClick,
-  } = useSpeechToText();
+  } = useSpeechToText({ selectedLanguage });
 
 
   const [estimations, setEstimations] = useState("");
@@ -87,6 +89,10 @@ export const useHome = () => {
         message: "Te gusta la respuesta",
       });
     });
+  };
+
+  const handleLanguageChange = (language) => {
+    setSelectedLanguage(language);
   };
 
   // (papelera) Función para limpiar la tarea y el texto transcrito 
@@ -179,5 +185,6 @@ export const useHome = () => {
     handleDisLikeClick,
     setDislikeFeedback,
     handleClear,
+    handleLanguageChange,
   };
 };

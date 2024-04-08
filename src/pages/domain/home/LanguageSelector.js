@@ -1,0 +1,64 @@
+
+import React, { useState } from 'react';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import flagES from '../../ES.png';
+import flagUS from '../../US.png';
+
+function LanguageSelector({ onLanguageChange }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('Idioma');
+
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+  const handleLanguageChange = (id) => {
+    if (id === '1') {
+      setSelectedLanguage('Español');
+      onLanguageChange('es-ES');
+    } else if (id === '2') {
+      setSelectedLanguage('Inglés');
+      onLanguageChange('en-US');
+    }
+  };
+
+  return (
+    <div>
+      <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        <DropdownToggle
+          caret
+          style={{
+            color: '#ffffff',
+            background: 'linear-gradient(45deg, #287ddd, #ffffff)',
+            border: 'none',
+          }}
+        >
+          {selectedLanguage === 'Español' ? (
+            <img src={flagES} alt="ES" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+          ) : null}
+          {selectedLanguage === 'Inglés' ? (
+            <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginRight: '8px' }} />
+          ) : null}
+          {selectedLanguage}
+        </DropdownToggle>
+        <DropdownMenu style={{ background: 'linear-gradient(45deg, #287ddd, #ffffff)' }}>
+          <DropdownItem
+            onClick={() => handleLanguageChange('1')}
+            style={{ color: '#ffffff', border: 'none' }}
+            id="1"
+          >
+            <img src={flagES} alt="ES" style={{ width: '20px', height: '20px', marginLeft: '7px' }} /> Español
+          </DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem
+            onClick={() => handleLanguageChange('2')}
+            style={{ color: '#ffffff', border: 'none' }}
+            id="2"
+          >
+            <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginLeft: '0.1px' }} /> Inglés
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </div>
+  );
+}
+
+export default LanguageSelector;

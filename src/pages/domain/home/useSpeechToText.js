@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
-export const useSpeechToText = () => {
+export const useSpeechToText = ({ selectedLanguage }) => {
   const [transcript, setTranscript] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('es-ES');
+  //const [selectedLanguage] = useState('es-ES');
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = useRef(new SpeechRecognition());
   const languageSelector = useRef(null);
   const browserSupportsSpeechRecognition = SpeechRecognition !== undefined;
-  const inactivityTimeout = useRef(null); // Referencia al temporizador de inactividad
-  const inactivityTimeoutDuration = 4000; // Duración del temporizador en milisegundos (5 segundos en este ejemplo)
+  const inactivityTimeout = useRef(null);
+  const inactivityTimeoutDuration = 4000;
 
   const startRecording = useCallback(() => {
     if (browserSupportsSpeechRecognition) {
@@ -28,40 +28,35 @@ export const useSpeechToText = () => {
   }, [browserSupportsSpeechRecognition]);
 
   useEffect(() => {
+    const currentRecognition = recognition.current;//da warning si se sube
     if (browserSupportsSpeechRecognition) {
-      recognition.current.continuous = true;
-      recognition.current.interimResults = false;
-
-      recognition.current.onresult = (event) => {
+      currentRecognition.continuous = true;
+      currentRecognition.interimResults = false;
+      currentRecognition.onresult = (event) => {
         const text = event.results[event.results.length - 1][0].transcript;
         setTranscript((prev) => prev + text);
-
-        // Reiniciar el temporizador de inactividad
+        console.log(text);
         clearTimeout(inactivityTimeout.current);
         inactivityTimeout.current = setTimeout(() => {
           stopRecording();
         }, inactivityTimeoutDuration);
       };
-
-      recognition.current.onend = () => {
+      currentRecognition.onend = () => {
         setIsRecording(false);
       };
-
       if (languageSelector.current) {
         languageSelector.current.addEventListener('change', () => {
           stopRecording();
           startRecording();
         });
       }
-    }
 
-    return () => {
-      if (recognition.current) {
-        recognition.current.stop();
-      }
-      clearTimeout(inactivityTimeout.current); // Limpiar el temporizador al desmontar el componente
-    };
-  }, []);
+      return () => {
+        currentRecognition.stop();
+        clearTimeout(inactivityTimeout.current);
+      };
+    }
+  }, [browserSupportsSpeechRecognition, startRecording, stopRecording]);
 
   const handleLanguageChange = (event) => {
     if (languageSelector.current) {
