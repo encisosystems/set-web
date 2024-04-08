@@ -6,7 +6,7 @@ import {
 } from "../../data/home/fetchEstimations";
 import { useDarkMode } from "./userDarkMode";
 import { useSpeechToText } from "./useSpeechToText";
-import { LanguageSelector } from "./LanguageSelector";
+import { useLanguageSelector } from './useLanguageSelector';
 
 export const useHome = () => {
   const [task, setTask] = useState("");
@@ -29,8 +29,20 @@ export const useHome = () => {
     handleSubmitDislikeFeedback,
     handleDisLikeClick,
   } = useDarkMode();
+  
+  const onLanguageChange = (language) => {
+    console.log('Nuevo idioma seleccionado:', language);
+  };
 
-  const [selectedLanguage, setSelectedLanguage] = useState('es-ES');
+  const { 
+    dropdownOpen,
+    toggle,
+    selectedLanguage,
+    setSelectedLanguage,
+    handleLanguageChange,
+  } = useLanguageSelector(onLanguageChange);
+  
+
   const {
     transcript,
     isRecording,
@@ -91,9 +103,6 @@ export const useHome = () => {
     });
   };
 
-  const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
-  };
 
   // (papelera) Función para limpiar la tarea y el texto transcrito 
   const handleClear = () => {
@@ -185,6 +194,10 @@ export const useHome = () => {
     handleDisLikeClick,
     setDislikeFeedback,
     handleClear,
+    dropdownOpen,
+    toggle,
+    selectedLanguage,
+    setSelectedLanguage,
     handleLanguageChange,
   };
 };

@@ -3,6 +3,7 @@ import Brightness3Icon from "@mui/icons-material/Brightness3";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { MicButton } from "./../components/micBotton";
+import Micro from "./../components/microphone";
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 import {
@@ -20,7 +21,6 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast";
 import { useHome } from "../domain/home/useHome";
-import LanguageSelector from "../domain/home/LanguageSelector";
 
 export default function EstimationTool() {
   const {
@@ -63,6 +63,10 @@ export default function EstimationTool() {
     handleDisLikeClick,
     setDislikeFeedback,
     handleClear, //papelera
+    dropdownOpen,
+    toggle,
+    selectedLanguage,
+    setSelectedLanguage,
     handleLanguageChange,
   } = useHome();
 
@@ -74,8 +78,7 @@ export default function EstimationTool() {
           onClick={toggleDarkMode}
           className={`toggle-button ${darkMode ? "dark-mode" : ""}`}
         >
-          <languageSelector onLanguageChange={handleLanguageChange} />
-          {/* Icono del sol a la izquierda */}
+         {/* Icono del sol a la izquierda */}
           <Brightness7Icon />
           {/* Icono de la luna a la derecha */}
           <Brightness3Icon />
@@ -87,6 +90,7 @@ export default function EstimationTool() {
           ></div>
         </div>
       </div>
+            <useLanguageSelector onLanguageChange={handleLanguageChange} />
       <div
         style={{
           display: "flex",
@@ -118,6 +122,9 @@ export default function EstimationTool() {
                 {frase}
               </p>
             </div>
+          </div>
+          <div>
+          <Micro/>
           </div>
           <TextField
             label="Ingrese su tarea"
