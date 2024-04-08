@@ -86,6 +86,12 @@ export const fecthAbout = () => {
       enviroment: "backend"
     },
     {
+      name: "Brayan Rojas",
+      description:
+        "Implementó el envío de un prompt al backend que permita a ChatGPT generar una sugerencia de tipo SMART de acuerdo a la tarea ingresada.",
+      enviroment: "backend"
+    },
+    {
       name: "Javier Enciso - Director del Proyecto ",
       description:
         "Encargado de la toma de decisiones estratégicas respecto al proyecto y asignación de tareas a los equipos de trabajo.",
@@ -196,7 +202,7 @@ export const fecthAbout = () => {
     {
       name: "Brayan Rojas",
       description:
-        "Adicionó una función para mejorar la calidad de las tareas ingresadas por los usuarios, proporcionando retroalimentación específica y sugerencias para reformular la tarea de manera que cumpla con los crioterios SMART (Específicos, Medibles, Alcanzables, Relevantes y con un Tiempo definido).",
+        "Aplicó un estilo de diseño que incluye esquinas redondeadas al cuadro de entrada de texto para mejorar la estética y la usabilidad de la interfaz de usuario.",
       enviroment: "frontend"
     },
     {
