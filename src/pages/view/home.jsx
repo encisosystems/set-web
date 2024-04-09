@@ -3,7 +3,6 @@ import Brightness3Icon from "@mui/icons-material/Brightness3";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { MicButton } from "./../components/micBotton";
-import Micro from "./../components/microphone";
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 import {
@@ -122,9 +121,6 @@ export default function EstimationTool() {
                 {frase}
               </p>
             </div>
-          </div>
-          <div>
-          <Micro/>
           </div>
           <TextField
             label="Ingrese su tarea"

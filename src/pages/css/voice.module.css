@@ -1,34 +1,36 @@
-.mic-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+
+.micContainer {
+  position: relative; 
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ad65eb; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.micOff {
+  fill: #007bff; 
+  background-color: transparent;
+}
+
+.micOn {
+  fill: #ffffff; 
+  animation: pulse 2s infinite;
+}
+
+/* Animación */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
   }
-  
-  .mic-container.recording {
-    transform: scale(1.2);
-    animation: pulse 1s infinite;
+  50% {
+    transform: scale(1.25);
   }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
+  100% {
+    transform: scale(1);
   }
-  
-  .mic-icon {
-    width: 24px;
-    height: 24px;
-    fill: #333;
-  }
-  
-  .mic-container.recording .mic-icon {
-    fill: #4CAF50;
-  }
+}
