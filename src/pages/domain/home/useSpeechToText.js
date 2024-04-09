@@ -3,18 +3,19 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 export const useSpeechToText = ({ selectedLanguage }) => {
   const [transcript, setTranscript] = useState('');
   const [isRecording, setIsRecording] = useState(false);
-  //const [selectedLanguage] = useState('es-ES');
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = useRef(new SpeechRecognition());
+  //const recognition = useRef(new SpeechRecognition());
+  const recognition = useRef(SpeechRecognition ? new SpeechRecognition() : null); //evitar problemas con firefox
   const languageSelector = useRef(null);
   const browserSupportsSpeechRecognition = SpeechRecognition !== undefined;
   const inactivityTimeout = useRef(null);
   const inactivityTimeoutDuration = 4000;
 
   const startRecording = useCallback(() => {
-    if (browserSupportsSpeechRecognition) {
+    if (recognition.current && browserSupportsSpeechRecognition) {
       setTranscript('');
       recognition.current.lang = selectedLanguage;
+      clearTimeout(inactivityTimeout.current);
       recognition.current.start();
       setIsRecording(true);
     }
