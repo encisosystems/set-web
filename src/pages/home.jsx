@@ -14,6 +14,7 @@ import Toast from "./toast"; // Componente Toast para mostrar mensajes
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
+
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
     const [showCopy, setShowCopy] = useState(false);
@@ -42,6 +43,7 @@ export default function EstimationTool() {
         }
     };
   
+
     const handleEstimate = () => {
         setShowEstimations(false);
         setShowCopy(false);
@@ -120,6 +122,10 @@ export default function EstimationTool() {
                         onChange={(e) => setTask(e.target.value)}
                         fullWidth
                         margin="normal"
+                        InputProps={{
+                            style: { borderRadius: 30 } // Establece la propiedad borderRadius para hacer los bordes más redondeados
+                        }}
+                        //border-radius="100%"
                         autoComplete="off"
                         inputProps={{ style: { textAlign: 'center' } }} 
                     />
@@ -129,10 +135,13 @@ export default function EstimationTool() {
                             onClick={handleEstimate}
                             variant="contained"
                             color="primary"
+                            sx={{ borderRadius: 20 }} 
                         >
                             Estimar
                         </Button>
                     </div>
+
+
 
                     {showEstimations && (
                         <>
