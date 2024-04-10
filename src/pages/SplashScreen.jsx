@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logosvg from '../assets/logosvg.svg';
+import logosvg from '../assets/logo.svg';
 import  '../assets/SplashScreen.css';
 
 
