@@ -1,0 +1,24 @@
+@keyframes fadeOutIn {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.1;
+    }
+  }
+  
+
+  .logo-splashscreen {                       /*Nombre de la clase del contenedor localizado en src./pages/SplashScreen.jsx*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+  }
+  .logo {
+    animation: fadeOutIn 3s infinite;   /*Animación de desvanecido "fading"*/
+    width: 100px;                      /* Tamaño del logotipo */
+    height: auto; 
+  }
+
+  

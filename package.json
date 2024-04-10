@@ -1,9 +1,8 @@
 {
-  "name": "c",
+  "name": "estimation-tool",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.11",
@@ -18,12 +17,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
+    "react-icons": "^5.0.1",
     "react-scripts": "5.0.1",
-    "react-share-kit": "^1.1.0",
     "react-toastify": "^10.0.4",
     "sort-by": "^1.2.0",
     "reactstrap": "^9.2.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@babel/plugin-proposal-private-property-in-object": "7.21.11"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,9 +48,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "description": "Para ejecutar la aplicación, se debe ejecutar el comando `npm start` en la terminal. Este comando iniciará un servidor web en el puerto 3000, y abrirá una ventana en el navegador con la aplicación. En caso de que no se abra automáticamente, se puede acceder a la aplicación en la dirección [http://localhost:3000](http://localhost:3000).",
-  "main": "index.js",
-  "author": "",
-  "license": "ISC"
+  }
 }
