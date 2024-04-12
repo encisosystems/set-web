@@ -7,7 +7,6 @@ import GoogleADS from "../components/GoogleADS";
 import Footer from "./../components/Footer";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Swal from "sweetalert2";
 import React from "react";
 import {
   Button,
@@ -24,8 +23,12 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast"; // Componente Toast para mostrar mensajes
 import { useHome } from "../domain/home/useHome";
+import useAnalyticsEventTracker from "./../../hooks/useAnalyticsEventTracker"
+
 
 export default function EstimationTool() {
+
+
   const {
     showAlert,
     estimations,
@@ -68,6 +71,8 @@ export default function EstimationTool() {
     setDislikeFeedback,
     handleModal
   } = useHome();
+
+
 
   return (
     <div>

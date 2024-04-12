@@ -7,7 +7,11 @@ import {
 import { useDarkMode } from "./userDarkMode";
 import { useSpeechToText } from "./useSpeechToText";
 import Swal from "sweetalert2";
+import useAnalyticsEventTracker from "./../../../hooks/useAnalyticsEventTracker";
+import ReactGA from 'react-ga4';
+
 export const useHome = () => {
+  const gaTrackerEvent = useAnalyticsEventTracker("estimation");
   const swal = Swal.mixin();
   const [task, setTask] = useState("");
   const {
@@ -37,7 +41,6 @@ export const useHome = () => {
     stopRecording,
     handleMicClick,
   } = useSpeechToText();
-
 
   const [estimations, setEstimations] = useState("");
   const [showEstimations, setShowEstimations] = useState(false);
@@ -96,6 +99,7 @@ export const useHome = () => {
   };
 
   const copyToClipboard = () => {
+    gaTrackerEvent("copy task estimated action", "Copy generated estimation");
     navigator.clipboard.writeText(estimations).then(() => {
       setToast({
         open: true,
@@ -120,11 +124,11 @@ export const useHome = () => {
     // pendiente: llamar API para guardar el valor
   };
 
-  const handleModal= async () => {
+  const handleModal = async () => {
     const result = await swal.fire({
       title: "Bienvenido a<br> Simple Estimation Tool",
       confirmButtonText: "Continuemos",
-     
+
       reverseButtons: true,
     });
 
@@ -133,11 +137,9 @@ export const useHome = () => {
       swal.fire({
         title: "¿Qué hacemos en SET?",
         text: "Es una herramienta diseñada para proporcionar al usuario estimaciones del tiempo necesario para completar tareas según los criterios SMART (Específicos, Medibles, Alcanzables, Relevantes y Temporales).",
-        
       });
-    } 
+    }
   };
-
 
   // funciones privadas
   const _getTasksStringSmart = (data) => {
@@ -153,7 +155,13 @@ export const useHome = () => {
     )} horas`;
   };
 
-
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/",
+      title: "Estimation page Home",
+    });
+  }, []);
 
   return {
     task,
@@ -193,6 +201,6 @@ export const useHome = () => {
     handleSubmitDislikeFeedbackAction,
     handleDisLikeClick,
     setDislikeFeedback,
-    handleModal
+    handleModal,
   };
 };
