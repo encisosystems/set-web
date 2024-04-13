@@ -2,38 +2,27 @@
 
 .container {
   position: relative;
-  background-color: rgba(12, 12, 12, 0.6);
-  border-radius: 15px;
-  padding: 73px;
-  margin-top: 129px;
+  background: none;
+  padding: 50px;
   z-index: 1;
-  margin-left: 10%;
-  margin-right: 10%;
+  background-image: url('../images/background-about.jpg'); 
+  background-size: cover; 
+  background-position: center; 
 }
 
-.frontendcontainer {
-  position: relative;
-  background-color: rgba(12, 12, 12, 0.6);
-  border-radius: 15px;
-  padding: 73px;
-  margin-top: 129px;
-  z-index: 1;
-  margin-left: 10%;
-  margin-right: 10%;
-}
 
 .backButton {
   background: none;
   border: none;
-  color: white;
-  font-size: 30px; /* Ajusta el tamaño de la flecha según sea necesario */
+  color: black;
+  font-size: 50px; 
   cursor: pointer;
   outline: none;
 }
 
 .title {
-  color: var(--color-text);
-  font-size: 35px;
+  color: black;
+  font-size: 40px;
   font-weight: 700;
   letter-spacing: 1.75px;
   text-transform: uppercase;
@@ -46,14 +35,16 @@
 }
 
 .aboutImage {
-  width: 35%;
+  width: 28%;
+  margin-right: 30px;
+  border-radius: 20px;
 }
 
 .aboutItems {
-  color: var(--color-text);
+  color: black;
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 30px;
 }
 
 .aboutItem {
@@ -78,7 +69,7 @@
 }
 
 .aboutItem h3 {
-  font-size: 25px;
+  font-size: 35px;
   font-weight: 600;
 }
 
@@ -86,27 +77,3 @@
   font-size: 25px;
 }
 
-@media screen and (max-width: 830px) {
-  .container {
-    background-color: transparent;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .content {
-    flex-direction: column;
-  }
-
-  .aboutImage {
-    display: none;
-  }
-
-  .aboutItems {
-    margin-top: 29px;
-  }
-
-  .aboutItem {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}

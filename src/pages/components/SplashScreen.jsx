@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logo from './../images/logo.svg'
+import logosvg from './../images/logo.svg'
 import  './../../assets/SplashScreen.css';
 
 
@@ -18,7 +18,7 @@ const SplashScreen = ({ onFinish }) => {
   return (                                                             
     <div className={`splash-screen ${show ? 'show' : 'hide'}`}>
         <div className='logo-splashscreen'>
-      <img className='logo' src={logo} alt='Loading...'/>
+      <img className='logo' src={logosvg} alt='Loading...'/>
         </div>
     </div>
   );

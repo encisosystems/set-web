@@ -16,6 +16,8 @@ function Dropdownn({ onLanguageChange }) {
   }
 
   useEffect(() => {
+    // Notifica al componente padre el idioma por defecto al montar el componente
+    onLanguageChange("ES");
     setDropdownOpen(false);
   }, [selectedLanguage]);
 

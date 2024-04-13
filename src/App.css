@@ -124,6 +124,27 @@
   color: #61dafb;
 }
 
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo-menu {
+  height: 40%; /* Tamaño del logotipo */
+  width: auto;
+  max-width: 100%; /* Asegura que el logotipo no se desborde en pantallas pequeñas */
+  margin-bottom: 20px; /* Espacio entre el logotipo y el texto */
+}
+
+.tittle-header {
+  font-size: 32px; /* Tamaño del texto del h1 */
+  color: rgb(27, 27, 27);
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
