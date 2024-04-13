@@ -1,6 +1,6 @@
 const useAuth = () => {
-    const user = { loggedIn: true };
-    return user && user.loggedIn;
+    const user = window.sessionStorage.getItem('username');
+    return user;
 };
 
 export default useAuth;
