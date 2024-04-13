@@ -311,6 +311,16 @@ const verHistorial = async () => {
                         </Button>
                     </div>
 
+                    <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
+                        <Button
+                            onClick={verHistorial}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Historial
+                        </Button>
+                    </div>
+
                     {showEstimations && (
                         <>
                             <TextField
