@@ -27,7 +27,7 @@ export const useAbout = () => {
 
   useEffect(() => {
     getUserCredis();
-  },[usersBackend,usersFrontend])
+  },[])
 
   return {
     showFrontend,
