@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "../domain/history/useHistory";
 import { TextField } from "@mui/material";
 
+
 export default function HistoryPage() {
   const { history } = useHistory();
 

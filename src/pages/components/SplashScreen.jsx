@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import logo from '../assets/logo.svg'
-import  '../assets/SplashScreen.css';
+import logo from './../images/logo.svg'
+import  './../../assets/SplashScreen.css';
 
 
 const SplashScreen = ({ onFinish }) => {

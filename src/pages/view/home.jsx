@@ -25,6 +25,7 @@ import Toast from "../components/toast"; // Componente Toast para mostrar mensaj
 import { useHome } from "../domain/home/useHome";
 import { useTranslation } from "react-i18next";
 import Dropdownn from "../components/ListaIdiomas";
+import logotipo from "./../images/logotipo.svg";
 
 export default function EstimationTool() {
   const {
@@ -72,6 +73,7 @@ export default function EstimationTool() {
   return (
     <div>
       <div style={{ width: "100%", top: 20 }}>
+      <img className="logo-menu" src={logotipo} />
         <h1 style={{ textAlign: "center" }}>
           <span style={{ fontFamily: "Impact", color: "#1E196A" }}>
             Simple Estimation Tool

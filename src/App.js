@@ -1,7 +1,6 @@
 import EstimationTool from "./pages/view/home";
 import React, { useState } from 'react';
-import SplashScreen from './pages/SplashScreen.jsx'
-import EstimationTool from './pages/home';
+import SplashScreen from './pages/components/SplashScreen'
 import './App.css';
 import {useEffect} from 'react';
 import ReactGA from 'react-ga4';
@@ -11,7 +10,7 @@ function App() {
   const handleSplashFinish = () => {
     setShowSplash(false);
   };
-  
+
   const [showSplash, setShowSplash] = useState(true);
   useEffect(() => {
     ReactGA.initialize('G-GJZR0LQFJR');
