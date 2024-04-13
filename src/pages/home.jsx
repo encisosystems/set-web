@@ -29,7 +29,7 @@ export default function EstimationTool() {
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [id, setID] = useState(0);
-    const [idLanguage, setIdLanguage] = useState(1);
+    const [language, setLanguage] = useState(1);
     const [ratingValue, setRatingValue] = useState(0);
     const [toast, setToast] = useState({ open: false, message: "" });
     const [anchorEl, setAnchorEl] = useState(null);
@@ -38,15 +38,18 @@ export default function EstimationTool() {
 
     
     useEffect(() => {
-     i18next.changeLanguage('es')
-     i18next.changeLanguage('en')
-    }, [idLanguage]);
+         // feature/translate-text
+         // i18next.changeLanguage(language)
+     console.log(language)
+    }, [language]);
 
 
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
-                `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${idLanguage}`,
+                // getNumber esta en el archivo trasnlate-config.js
+               // `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${getNumber(language)}`,
+               `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${1}`,
                 {
                     method: 'GET',
                 }
@@ -65,9 +68,9 @@ export default function EstimationTool() {
         }
     };
     
-    const handleLanguageChange = (selectedId) => {
-        setIdLanguage(selectedId); // Actualiza el ID seleccionado
-        console.log(selectedId);
+    const handleLanguageChange = (language) => {
+        setLanguage(language); // Actualiza el ID seleccionado
+        console.log(language);
     };
     const handleClear = () => {
         setTask('');
