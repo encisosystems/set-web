@@ -1,14 +1,30 @@
-
 import React, { useState, useEffect } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    InputAdornment,
+    LinearProgress,
+    Menu,
+    MenuItem,
+    Rating,
+    Select,
+    TextField
+} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import logotipo from "../assets/logotipo.svg";
-import {Button, Dialog, DialogActions, DialogContent, IconButton, InputAdornment, LinearProgress, Menu, MenuItem, Rating, TextField} from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ShareIcon from "@mui/icons-material/Share";
 import {Email, Facebook, WhatsApp} from "@mui/icons-material";
 import Toast from "./components/toast"; // Componente Toast para mostrar mensajes
 import ListadoIdiomas from "./ListaIdiomas";
 import {About} from "./view/About";
+
+const seniorityLevels = ["Junior", "Middle", "Semi-senior", "Senior"];
 
 export default function EstimationTool() {
     //const API_URL = "http://18.221.34.229";
@@ -20,6 +36,7 @@ export default function EstimationTool() {
     const [id, setID] = useState(0);
     const [idLanguage, setIdLanguage] = useState(1);
     const [ratingValue, setRatingValue] = useState(0);
+    const [selectedSeniority, setSelectedSeniority] = useState("");
     const [toast, setToast] = useState({ open: false, message: "", severity: "" });
     const [anchorEl, setAnchorEl] = useState(null);
     const [showLoading, setShowLoading] = useState(false);
@@ -32,13 +49,19 @@ export default function EstimationTool() {
             console.log("API_URL: " + API_URL)
             console.log("TASK: " + task)
             const response = await fetch(
-                `${API_URL}/API/chat?task=${encodeURIComponent(task)}`, // Se agrega el parámetro idLanguage: `${API_URL}/API/chat?task=${encodeURIComponent(task)}&idLanguage=${idLanguage}`,
-                {
+                `${API_URL}/API/chat?task=${encodeURIComponent(task)}&seniority=${encodeURIComponent(selectedSeniority)}&idLanguage=${encodeURIComponent(idLanguage)}`,                {
                     method: 'GET',
                 }
             );
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
             console.log("data:", data);
+            console.log("task:", task);
+            console.log("seniority:", selectedSeniority);
             return data;
         } catch (error) {
             console.error('Error fetching estimations:', error);
@@ -46,7 +69,7 @@ export default function EstimationTool() {
         }
     };
 
-    const handleEstimate = async () => {
+  handleEstimate = async () => {
         setShowEstimations(false);
         setShowCopy(false);
         setShowLoading(true);
@@ -54,6 +77,14 @@ export default function EstimationTool() {
             setToast({
                 open: true,
                 message: "Por favor, ingrese un objetivo antes de obtener la estimación.",
+                severity: "warning",
+            });
+            setShowLoading(false);
+        }
+        if (!selectedSeniority) {
+            setToast({
+                open: true,
+                message: "Por favor, ingrese el nivel de experiencia.",
                 severity: "warning",
             });
             setShowLoading(false);
@@ -80,11 +111,11 @@ export default function EstimationTool() {
                         const tasksString = data.estimation.tasks
                             .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
                             .join("\n");
-
                         setEstimations(tasksString);
                         setShowEstimations(true);
                         setShowCopy(false); // Controla la visibilidad del botón de copia
                     }
+                    setID(data.id)
                 })
                 .catch((error) => {
                     setEstimations(`Error al obtener las estimaciones: ${error.message}`);
@@ -165,7 +196,7 @@ export default function EstimationTool() {
             throw error;
         }
     }
-  
+
     return (
         <div>
             <ListadoIdiomas onLanguageChange={handleLanguageChange}/>
@@ -199,6 +230,21 @@ export default function EstimationTool() {
                             </InputAdornment>
                         )}}
                     />
+
+                    <Select
+                        value={selectedSeniority}
+                        onChange={(e) => setSelectedSeniority(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        label="Seleccione el nivel de seniority"
+                    >
+                        {seniorityLevels.map((level) => (
+                            <MenuItem key={level} value={level}>
+                                {level}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
                     <div>
                         {showLoading && <LinearProgress/>}
                     </div>
