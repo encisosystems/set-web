@@ -17,6 +17,7 @@ Para ejecutar las pruebas de la aplicación, se debe ejecutar el comando `npm te
 ## Despliegue de la aplicación en AWS EC2
 
 Para desplegar la aplicación en un servidor web de AWS EC2, se deben seguir los siguientes pasos:
+
 1. Crear una instancia de AWS EC2 con el sistema operativo Amazon Linux 2.
 2. Conectarse a la instancia de AWS EC2 a través de Putty.
 3. Instalar Node.js, npm y git en la instancia de AWS EC2.

@@ -6,10 +6,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function Toast({ open, message, onClose }) {
+function Toast({ open, message, onClose, severity }) {
     return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
-            <Alert onClose={onClose} severity="success" sx={{ width: '100%' }}>
+        <Snackbar open={open} autoHideDuration={5000} onClose={onClose}>
+            <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
                 {message}
             </Alert>
         </Snackbar>

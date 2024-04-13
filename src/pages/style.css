@@ -1,0 +1,17 @@
+.about-button {
+  background-color: #2196f3; /* Color azul */
+  color: white;
+  border-radius: 15px;
+  padding: 5px 15px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: none;
+  opacity: 0.7; /* Ajusta la opacidad del botón */
+}
+  
+.about-button:hover {
+  opacity: 1; /* Restaura la opacidad al pasar el cursor */
+}
+  
+  
