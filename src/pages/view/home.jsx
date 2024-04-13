@@ -67,225 +67,248 @@ export default function EstimationTool() {
     handleLanguageChange,
   } = useHome();
 
- 
   const { t: translate } = useTranslation();
 
   return (
-    <div>
-      <div style={{ width: "100%", top: 20 }}>
-      <img className="logo-menu" src={logotipo} />
-        <h1 style={{ textAlign: "center" }}>
-          <span style={{ fontFamily: "Impact", color: "#1E196A" }}>
-            Simple Estimation Tool
-          </span>
-        </h1>
-        <GoogleADS />
-
-        <div
-          onClick={toggleDarkMode}
-          className={`toggle-button ${darkMode ? "dark-mode" : ""}`}
-        >
-          {/* Icono del sol a la izquierda */}
-          <Brightness7Icon />
-          {/* Icono de la luna a la derecha */}
-          <Brightness3Icon />
-          {/* Círculo deslizante */}
-          <div
-            className={`switch-slider ${
-              darkMode ? "switch-slider-active" : ""
-            }`}
-          ></div>
-        </div>
+    <>
+      <div style={{ position: "absolute", top: "10px", left: "10px" }}>
+        <Dropdownn onLanguageChange={handleLanguageChange} />
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "85vh",
-        }}
-      >
-        <div style={{ padding: 16, maxWidth: 800, width: "100%" }}>
-          <Dialog open={showAlert} onClose={() => setShowAlert(false)}>
-            <DialogTitle>Alerta</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Por favor, ingrese una tarea antes de obtener la estimación.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setShowAlert(false)} color="primary">
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <div>
-            <div className="image-container">
-              <img src={imagen} alt="Imagen del momento del día" />
-            </div>
-            <div className="frase-container" style={{ textAlign: "center" }}>
-              <p className="frase" style={{ marginTop: "20px" }}>
-                {frase}
-              </p>
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: "3px", alignItems: "baseline" }}>
-            <TextField
-              label="Ingrese su tarea"
-              value={transcript || task}
-              onChange={(e) => {
-                setTask(e.target.value);
-                setTranscript(e.target.value);
-              }}
-              fullWidth
-              margin="normal"
-              autoComplete="off"
-              inputProps={{
-                style: {
-                  textAlign: "center",
-                  backgroundColor: "white",
-                  borderRadius: 30,
-                },
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <MicButton
-                      isRecording={isRecording}
-                      handleClick={handleMicClick}
-                    />
-                    <Button onClick={handleClear} edge="end">
-                      <DeleteIcon />
-                    </Button>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <span>
-              <IconButton onClick={handleModal}>
-                <LiveHelpIcon />
-              </IconButton>
+      <div>
+        <div
+          style={{
+            width: "100%",
+            top: 20,
+            display: "flex",
+            flexDirection: "column",
+            marginTop: 20,
+          }}
+        >
+          <img className="logo-menu" src={logotipo} />
+          <h1 style={{ textAlign: "center" }}>
+            <span style={{ fontFamily: "Impact", color: "#1E196A" }}>
+              Simple Estimation Tool
             </span>
-          </div>
+          </h1>
+          <GoogleADS />
+
           <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "16px 0",
-            }}
+            onClick={toggleDarkMode}
+            className={`toggle-button ${darkMode ? "dark-mode" : ""}`}
           >
-            <Button
-              onClick={handleEstimate}
-              variant="contained"
-              color="primary"
-              sx={{borderRadius: 30}}
+            {/* Icono del sol a la izquierda */}
+            <Brightness7Icon />
+            {/* Icono de la luna a la derecha */}
+            <Brightness3Icon />
+            {/* Círculo deslizante */}
+            <div
+              className={`switch-slider ${
+                darkMode ? "switch-slider-active" : ""
+              }`}
+            ></div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "85vh",
+          }}
+        >
+          <div style={{ padding: 16, maxWidth: 800, width: "100%" }}>
+            <Dialog open={showAlert} onClose={() => setShowAlert(false)}>
+              <DialogTitle>Alerta</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Por favor, ingrese una tarea antes de obtener la estimación.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setShowAlert(false)} color="primary">
+                  OK
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <div>
+              <div className="image-container">
+                <img src={imagen} alt="Imagen del momento del día" />
+              </div>
+              <div className="frase-container" style={{ textAlign: "center" }}>
+                <p className="frase" style={{ marginTop: "20px" }}>
+                  {frase}
+                </p>
+              </div>
+            </div>
+            <div
+              style={{ display: "flex", gap: "3px", alignItems: "baseline" }}
             >
-              {translate("ESTIMATE_BUTTON")}
-            </Button>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "16px 0",
-            }}
-          >
-            <Button onClick={verHistorial} variant="contained" color="primary">
-              Historial
-            </Button>
-          </div>
-          {showEstimations && (
-            <>
               <TextField
-                label="Estimaciones"
-                value={estimations}
-                multiline
+                label="Ingrese su tarea"
+                value={transcript || task}
+                onChange={(e) => {
+                  setTask(e.target.value);
+                  setTranscript(e.target.value);
+                }}
                 fullWidth
                 margin="normal"
-                InputProps={{
-                  readOnly: true,
-                  style: { backgroundColor: "white" },
+                autoComplete="off"
+                inputProps={{
+                  style: {
+                    textAlign: "center",
+                    backgroundColor: "white",
+                    borderRadius: 30,
+                  },
                 }}
-                variant="outlined"
-              />
-              {showCopy && (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    margin: "16px 0",
-                  }}
-                >
-                  {/* Botón de copiar */}
-                  <IconButton onClick={copyToClipboard} aria-label="copy">
-                    <ContentCopyIcon />
-                  </IconButton>
-                  {/* Botón de Me gusta */}
-                  <IconButton onClick={handleLikeClickAction} aria-label="like">
-                    <ThumbUpIcon
-                      style={{ color: likeClicked ? "yellow" : "inherit" }}
-                    />
-                  </IconButton>
-                  <IconButton onClick={handleDisLikeClick} aria-label="dislike">
-                    <ThumbDownIcon
-                      style={{ color: dislikeClicked ? "yellow" : "inherit" }}
-                    />
-                  </IconButton>
-
-                  <Dialog
-                    open={showDislikeFeedback}
-                    onClose={handleCloseDislikeFeedback}
-                  >
-                    <DialogTitle>
-                      Cuéntanos por qué no te ha gustado la respuesta
-                    </DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        label="Escribe tu comentario"
-                        value={dislikeFeedback}
-                        onChange={(e) => setDislikeFeedback(e.target.value)}
-                        fullWidth
-                        multiline
-                        rows={4}
-                        ariant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <MicButton
+                        isRecording={isRecording}
+                        handleClick={handleMicClick}
                       />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button
-                        onClick={handleCloseDislikeFeedback}
-                        color="primary"
-                      >
-                        Cancelar
+                      <Button onClick={handleClear} edge="end">
+                        <DeleteIcon />
                       </Button>
-                      <Button
-                        onClick={handleSubmitDislikeFeedbackAction}
-                        color="primary"
-                      >
-                        Enviar
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </div>
-              )}
-              <div>
-                <h3>Evalua las estimaciones</h3>
-                <Rating
-                  name="rating"
-                  value={ratingValue}
-                  onChange={onChangeRating}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <span>
+                <IconButton onClick={handleModal}>
+                  <LiveHelpIcon />
+                </IconButton>
+              </span>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "16px 0",
+              }}
+            >
+              <Button
+                onClick={handleEstimate}
+                variant="contained"
+                color="primary"
+                sx={{ borderRadius: 30 }}
+              >
+                {translate("ESTIMATE_BUTTON")}
+              </Button>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "16px 0",
+              }}
+            >
+              <Button
+                onClick={verHistorial}
+                variant="contained"
+                color="primary"
+              >
+                Historial
+              </Button>
+            </div>
+            {showEstimations && (
+              <>
+                <TextField
+                  label="Estimaciones"
+                  value={estimations}
+                  multiline
+                  fullWidth
+                  margin="normal"
+                  InputProps={{
+                    readOnly: true,
+                    style: { backgroundColor: "white" },
+                  }}
+                  variant="outlined"
                 />
-              </div>
-            </>
-          )}
+                {showCopy && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "16px 0",
+                    }}
+                  >
+                    {/* Botón de copiar */}
+                    <IconButton onClick={copyToClipboard} aria-label="copy">
+                      <ContentCopyIcon />
+                    </IconButton>
+                    {/* Botón de Me gusta */}
+                    <IconButton
+                      onClick={handleLikeClickAction}
+                      aria-label="like"
+                    >
+                      <ThumbUpIcon
+                        style={{ color: likeClicked ? "yellow" : "inherit" }}
+                      />
+                    </IconButton>
+                    <IconButton
+                      onClick={handleDisLikeClick}
+                      aria-label="dislike"
+                    >
+                      <ThumbDownIcon
+                        style={{ color: dislikeClicked ? "yellow" : "inherit" }}
+                      />
+                    </IconButton>
 
-          <Toast
-            open={toast.open}
-            message={toast.message}
-            onClose={() => setToast({ ...toast, open: false })}
-          />
+                    <Dialog
+                      open={showDislikeFeedback}
+                      onClose={handleCloseDislikeFeedback}
+                    >
+                      <DialogTitle>
+                        Cuéntanos por qué no te ha gustado la respuesta
+                      </DialogTitle>
+                      <DialogContent>
+                        <TextField
+                          label="Escribe tu comentario"
+                          value={dislikeFeedback}
+                          onChange={(e) => setDislikeFeedback(e.target.value)}
+                          fullWidth
+                          multiline
+                          rows={4}
+                          ariant="outlined"
+                        />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button
+                          onClick={handleCloseDislikeFeedback}
+                          color="primary"
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          onClick={handleSubmitDislikeFeedbackAction}
+                          color="primary"
+                        >
+                          Enviar
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
+                )}
+                <div>
+                  <h3>Evalua las estimaciones</h3>
+                  <Rating
+                    name="rating"
+                    value={ratingValue}
+                    onChange={onChangeRating}
+                  />
+                </div>
+              </>
+            )}
+
+            <Toast
+              open={toast.open}
+              message={toast.message}
+              onClose={() => setToast({ ...toast, open: false })}
+            />
+          </div>
         </div>
-      </div>
-      <div
+        <div
           style={{
             width: "50%",
             height: "300px",
@@ -293,34 +316,28 @@ export default function EstimationTool() {
             margin: "0 auto",
           }}
         >
-
           <img
             style={{ width: "100%", height: "100%" }}
             src="/pauta.jpeg"
             alt=""
           />
         </div>
-      <GoogleADS/>
-      {mostrarHistorico && (
-        <TextField
-          label="Historico"
-          value={historico}
-          multiline
-          fullWidth
-          margin="normal"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="outlined"
-        />
-      )}
-      <Footer></Footer>
-      <div
-        className="container"
-        style={{ position: "absolute", top: "10px", left: "10px" }}
-      >
-        <Dropdownn onLanguageChange={handleLanguageChange} />
+        <GoogleADS />
+        {mostrarHistorico && (
+          <TextField
+            label="Historico"
+            value={historico}
+            multiline
+            fullWidth
+            margin="normal"
+            InputProps={{
+              readOnly: true,
+            }}
+            variant="outlined"
+          />
+        )}
+        <Footer></Footer>
       </div>
-    </div>
+    </>
   );
 }

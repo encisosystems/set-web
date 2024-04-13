@@ -9,10 +9,10 @@
 
 
 .logo-menu {
-  height: 50%; 
+  height: 90px;
   width: auto;
-  max-width: 100%; 
-  margin-bottom: 20px; 
+  max-width: 100%;
+  margin-bottom: 20px;
 }
 
 .toggle-button {
@@ -133,12 +133,7 @@
   margin-bottom: 16px;
 }
 
-.logo-menu {
-  height: 40%; /* Tamaño del logotipo */
-  width: auto;
-  max-width: 100%; /* Asegura que el logotipo no se desborde en pantallas pequeñas */
-  margin-bottom: 20px; /* Espacio entre el logotipo y el texto */
-}
+
 
 .tittle-header {
   font-size: 32px; /* Tamaño del texto del h1 */
