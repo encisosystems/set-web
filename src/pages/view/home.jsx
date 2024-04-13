@@ -3,7 +3,10 @@ import Brightness3Icon from "@mui/icons-material/Brightness3";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import { MicButton } from "./../components/micBotton";
-import DeleteIcon from '@mui/icons-material/Delete';
+import GoogleADS from "../components/GoogleADS";
+import Footer from "./../components/Footer";
+import LiveHelpIcon from "@mui/icons-material/LiveHelp";
+import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import {
   Button,
@@ -20,8 +23,11 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast";
 import { useHome } from "../domain/home/useHome";
+import { useTranslation } from 'react-i18next';
 
 export default function EstimationTool() {
+
+
   const {
     showAlert,
     estimations,
@@ -67,12 +73,17 @@ export default function EstimationTool() {
     selectedLanguage,
     setSelectedLanguage,
     handleLanguageChange,
+    handleModal
   } = useHome();
+
+   const {t: translate} = useTranslation()
 
   return (
     <div>
       <div style={{ width: "100%", top: 20 }}>
         <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
+        <GoogleADS />
+
         <div
           onClick={toggleDarkMode}
           className={`toggle-button ${darkMode ? "dark-mode" : ""}`}
@@ -122,29 +133,38 @@ export default function EstimationTool() {
               </p>
             </div>
           </div>
-          <TextField
-            label="Ingrese su tarea"
-            value={transcript || task}
-            onChange={(e) => {
-              setTask(e.target.value);
-              setTranscript(e.target.value)
-            }}
-            fullWidth
-            margin="normal"
-            autoComplete="off"
-            inputProps={{ style: { textAlign: "center" } }}
-            InputProps={{
-              endAdornment: (
+          <div style={{ display: "flex", gap: "3px", alignItems: "baseline" }}>
+            <TextField
+              label="Ingrese su tarea"
+              value={transcript || task}
+              onChange={(e) => {
+                setTask(e.target.value);
+                setTranscript(e.target.value);
+              }}
+              fullWidth
+              margin="normal"
+              autoComplete="off"
+              inputProps={{ style: { textAlign: "center" } }}
+              InputProps={{
+                endAdornment: (
                   <InputAdornment position="end">
-                      <MicButton isRecording={isRecording} handleClick={handleMicClick} />
-                      <Button onClick={handleClear} edge="end">
-                          <DeleteIcon />
-                      </Button>
+                    <MicButton
+                      isRecording={isRecording}
+                      handleClick={handleMicClick}
+                    />
+                    <Button onClick={handleClear} edge="end">
+                      <DeleteIcon />
+                    </Button>
                   </InputAdornment>
-              ),
-          }}
-          />
-
+                ),
+              }}
+            />
+            <span>
+              <IconButton onClick={handleModal}>
+                <LiveHelpIcon />
+              </IconButton>
+            </span>
+          </div>
           <div
             style={{
               display: "flex",
@@ -157,7 +177,7 @@ export default function EstimationTool() {
               variant="contained"
               color="primary"
             >
-              Estimar
+              {translate('ESTIMATE_BUTTON')}
             </Button>
           </div>
 
@@ -251,6 +271,7 @@ export default function EstimationTool() {
           />
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }
