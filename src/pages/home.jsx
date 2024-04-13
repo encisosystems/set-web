@@ -23,9 +23,22 @@ export default function EstimationTool() {
     const [toast, setToast] = useState({ open: false, message: "", severity: "" });
     const [anchorEl, setAnchorEl] = useState(null);
     const [showLoading, setShowLoading] = useState(false);
+
+    const [searchHistory, setSearchHistory] = useState([]);
+    const [isHistoryMinimized, setIsHistoryMinimized] = useState(false);
+
+
+    
+    useEffect(() => {
+    }, [idLanguage]);
+    const toggleHistoryMinimized = () => {
+        setIsHistoryMinimized(!isHistoryMinimized);
+    };
+
     const [showAbout, setShowAbout] = useState(false);
 
     useEffect(() => {}, [idLanguage]);
+
 
     const fetchEstimations = async () => {
         try {
@@ -81,6 +94,64 @@ export default function EstimationTool() {
                             .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
                             .join("\n");
 
+        fetchEstimations()
+        .then((data) => { 
+            setShowLoading(false);
+            //console.log("Estimations:", data.smart);
+            if (data.smart) {
+                // Procesa y muestra las estimaciones si smart es true
+                const tasksString = data.estimation.tasks
+                .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
+                .join("\n");
+                setEstimations(
+                    `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
+                        (acc, curr) => acc + curr.estimated_hours,
+                        0
+                    )} horas`
+                );
+                setShowEstimations(true);
+                setShowCopy(true);
+            }
+            else {
+                const tasksString = data.estimation.tasks
+                .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
+                .join("\n");
+
+                    setEstimations(tasksString);
+                    setShowEstimations(true);
+                    setShowCopy(false);
+                }
+            setSearchHistory((prevHistory) => [
+                ...prevHistory,
+                { task: task, idLanguage: idLanguage },
+            ]);
+            })
+            .catch((error) => {
+                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+                setShowEstimations(true);
+                setShowLoading(false);
+                //console.log("Estimations:", data.smart);
+                if (data.smart) {
+                    // Procesa y muestra las estimaciones si smart es true
+                    const tasksString = data.estimation.tasks
+                        .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
+                        .join("\n");
+                    setEstimations(
+                        `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
+                            (acc, curr) => acc + curr.estimated_hours,
+                            0
+                        )} horas`
+                    );
+                    setShowEstimations(true);
+                    setShowCopy(true);
+                }
+                else {
+                    const tasksString = data.estimation.tasks
+                        .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
+                        .join("\n");
+
+                    setEstimations(tasksString);
+
                         setEstimations(tasksString);
                         setShowEstimations(true);
                         setShowCopy(false); // Controla la visibilidad del botón de copia
@@ -88,6 +159,7 @@ export default function EstimationTool() {
                 })
                 .catch((error) => {
                     setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+
                     setShowEstimations(true);
                     setShowCopy(false); // Ocultar el botón de copia en caso de error
                 })
@@ -256,6 +328,56 @@ export default function EstimationTool() {
                     <Toast open={toast.open} message={toast.message} severity={toast.severity} onClose={() => setToast({ ...toast, open: false })} />
                 </div>
             </div>
+
+            <div className="container" style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                <Dropdownn onLanguageChange={handleLanguageChange}/>
+
+            </div>
+            {/* Historial de consultas */}
+            <div style={{ position: "fixed", bottom: "10px", right: "10px", zIndex: 1000 }}>
+                <div style={{
+                    width: "300px",  // Ancho fijo para el contenedor del historial
+                    maxHeight: "200px",
+                    overflowY: "auto",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    backgroundColor: "#fff",
+                    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+                    textAlign: "center",  // Texto centrado horizontalmente
+                }}>
+                    <h4 style={{ marginBottom: "10px", fontSize: "16px", cursor: "pointer" }} onClick={toggleHistoryMinimized}>
+                        Historial de Consultas Recientes
+                    </h4>
+                    {!isHistoryMinimized && (
+                        <ul style={{ listStyleType: "none", padding: 0 }}>
+                            {searchHistory.map((item, index) => (
+                                <li key={index} style={{ marginBottom: "5px" }}>
+                                    <button
+                                        onClick={() => setTask(item.task)}
+                                        style={{
+                                            width: "100%",  // Botones ocupan todo el ancho del contenedor
+                                            padding: "10px",
+                                            borderRadius: "5px",
+                                            backgroundColor: "#007bff",
+                                            color: "#fff",
+                                            border: "none",
+                                            cursor: "pointer",
+                                            textAlign: "center",  // Texto centrado horizontalmente
+                                        }}
+                                    >
+                                        {item.task} (ID de Idioma: {item.idLanguage})
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+            </div>
+            </div>
+            <div className="container" style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                <Dropdownn onLanguageChange={handleLanguageChange} />
+            </div>
+
         </div>
     );
 }
