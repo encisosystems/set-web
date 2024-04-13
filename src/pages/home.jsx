@@ -21,6 +21,8 @@ export default function EstimationTool() {
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
     const [showCopy, setShowCopy] = useState(false);
+    const [historico, setHistorico] = useState("");   //Oscar Paez
+    const [mostrarHistorico, setMostrarHistorico] = useState(false);   //Oscar Paez
     const [showAlert, setShowAlert] = useState(false);
     const [toast, setToast] = useState({ open: false, message: "" });
     const {t} = useTranslation()
