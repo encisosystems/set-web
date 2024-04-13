@@ -23,8 +23,7 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast"; // Componente Toast para mostrar mensajes
 import { useHome } from "../domain/home/useHome";
-import useAnalyticsEventTracker from "./../../hooks/useAnalyticsEventTracker"
-
+import { useTranslation } from 'react-i18next';
 
 export default function EstimationTool() {
 
@@ -72,7 +71,7 @@ export default function EstimationTool() {
     handleModal
   } = useHome();
 
-
+   const {t: translate} = useTranslation()
 
   return (
     <div>
@@ -172,7 +171,7 @@ export default function EstimationTool() {
               variant="contained"
               color="primary"
             >
-              Estimar
+              {translate('ESTIMATE_BUTTON')}
             </Button>
           </div>
 
