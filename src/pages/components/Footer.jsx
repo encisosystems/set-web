@@ -1,6 +1,7 @@
 import React from "react";
 
 const Footer = () => {
+  const actualYear = new Date().getFullYear();
   return (
     <div style={{textAlign:"center",display:"flex",justifyContent:"center",flexDirection:"column"}}>
       <div>
@@ -10,7 +11,7 @@ const Footer = () => {
        
       </div>
       <hr style={{margin:"15px auto",width:"50%"}} />
-      <div>©2024 - Simple Estimation Tool.</div>
+      <div>©2024{actualYear === 2024 ? null : '-'+ actualYear} - Enciso Estimation Tool.</div>
     </div>
     
   );
