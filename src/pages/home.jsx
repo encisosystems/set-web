@@ -14,8 +14,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp"; // Importa el icono del pulgar hacia arriba
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
-import ReactGA from 'react-ga4';
-import useAnalyticsEventTracker from "../hooks/useAnalyticsEventTracker";
+import { useTranslation } from 'react-i18next';
 
 export default function EstimationTool() {
     const [task, setTask] = useState("");
@@ -24,14 +23,7 @@ export default function EstimationTool() {
     const [showCopy, setShowCopy] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [toast, setToast] = useState({ open: false, message: "" });
-    
-    const gaTrackerEvent = useAnalyticsEventTracker('estimation')
-
-    useEffect(() => {
-        ReactGA.send({ hitType: "pageview", page: "/", title: "Estimation page Home" });
-
-    }, [])
-
+    const {t} = useTranslation()
     const fetchEstimations = async () => {
         try {
             const response = await fetch(
