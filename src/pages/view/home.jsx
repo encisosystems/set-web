@@ -74,14 +74,18 @@ export default function EstimationTool() {
 
   const styleLogin = {
     marginLeft: "auto",
-    width: "fit-content"
- };
+    width: "fit-content",
+  };
   const { t: translate } = useTranslation();
 
   return (
     <div>
       <div style={{ width: "100%", top: 20 }}>
-        <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
+        <h1 style={{ textAlign: "center" }}>
+          <span style={{ fontFamily: "Impact", color: "#1E196A" }}>
+            Simple Estimation Tool
+          </span>
+        </h1>
         <GoogleADS />
 
         <div
@@ -143,7 +147,7 @@ export default function EstimationTool() {
               fullWidth
               margin="normal"
               autoComplete="off"
-              inputProps={{ style: { textAlign: "center" } }}
+              inputProps={{ style: { textAlign: "center",backgroundColor: "white" } }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -200,6 +204,7 @@ export default function EstimationTool() {
                 margin="normal"
                 InputProps={{
                   readOnly: true,
+                  style: {backgroundColor: "white"}
                 }}
                 variant="outlined"
               />
