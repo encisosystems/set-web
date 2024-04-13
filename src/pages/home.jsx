@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
+import AdSense from 'react-adsense';
 
 export default function EstimationTool() {
 
@@ -125,30 +126,6 @@ export default function EstimationTool() {
       <div style={{ width: "100%", top: 20 }}>
         <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
         <Bienvenida />
-        <ins class="adsbygoogle"
-     style={{display:"block"}}
-     data-ad-client="ca-pub-2780749763957723"
-     data-ad-slot="2587403147"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-        <div
-          style={{
-            width: "50%",
-            height: "300px",
-            backgroundColor: "red",
-            margin: "0 auto",
-          }}
-        >
-  
-          <img
-            style={{ width: "100%", height: "100%" }}
-            src={imagenPaute}
-            alt=""
-          />
-        </div>
       </div>
       <div
         style={{
@@ -245,6 +222,14 @@ export default function EstimationTool() {
           />
         </div>
       </div>
+      <AdSense.Google
+  client='ca-pub-2843282274139612'
+  slot='9039895067'
+  style={{ display: 'block' }}
+  format='auto'
+  responsive='true'
+  layoutKey='-gw-1+2a-9x+5c'
+/>
       <Footer></Footer>
     </div>
   );
