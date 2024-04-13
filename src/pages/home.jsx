@@ -38,6 +38,8 @@ export default function EstimationTool() {
 
     
     useEffect(() => {
+     i18next.changeLanguage('es')
+     i18next.changeLanguage('en')
     }, [idLanguage]);
 
 
@@ -65,6 +67,7 @@ export default function EstimationTool() {
     
     const handleLanguageChange = (selectedId) => {
         setIdLanguage(selectedId); // Actualiza el ID seleccionado
+        console.log(selectedId);
     };
     const handleClear = () => {
         setTask('');
@@ -106,37 +109,6 @@ export default function EstimationTool() {
                     setShowEstimations(true);
                     setShowCopy(false);
                 }
-            })
-            .catch((error) => {
-                setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-                setShowEstimations(true);
-                setShowLoading(false);
-                //console.log("Estimations:", data.smart);
-                if (data.smart) {
-                    // Procesa y muestra las estimaciones si smart es true
-                    const tasksString = data.estimation.tasks
-                        .map((t) => `•\t${t.task} - Estimado: ${t.estimated_hours} horas`)
-                        .join("\n");
-                    setEstimations(
-                        `${tasksString}\n\nTotal estimado: ${data.estimation.tasks.reduce(
-                            (acc, curr) => acc + curr.estimated_hours,
-                            0
-                        )} horas`
-                    );
-                    setShowEstimations(true);
-                    setShowCopy(true);
-                }
-                else {
-                    const tasksString = data.estimation.tasks
-                        .map((t, index) => (index === 0 ? `${t.task}` : `\t• ${t.task}`))
-                        .join("\n");
-
-                    setEstimations(tasksString);
-                    setShowEstimations(true);
-                    setShowLoading(false);
-                    setShowCopy(false); // Controla la visibilidad del botón de copia
-                }
-                setID(data.id)
             })
             .catch((error) => {
                 setEstimations(`Error al obtener las estimaciones: ${error.message}`);
