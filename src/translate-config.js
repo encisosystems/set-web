@@ -14,7 +14,8 @@ i18n
         // Asumiendo que lngs es un arreglo y tomando el primer idioma
         const langCode = lngs[0];
         const numberForLang = getNumberLanguage(langCode);
-        return `http://192.168.137.163:8082/TRANSLATION/translation/${numberForLang}`;
+        //return `http://192.168.137.163:8082/TRANSLATION/translation/${numberForLang}`;
+        return ""; 
       },
     },
     interpolation: {
