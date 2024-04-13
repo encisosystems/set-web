@@ -23,11 +23,9 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast"; // Componente Toast para mostrar mensajes
 import { useHome } from "../domain/home/useHome";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export default function EstimationTool() {
-
-
   const {
     showAlert,
     estimations,
@@ -43,6 +41,8 @@ export default function EstimationTool() {
     likeClicked,
     imagen,
     frase,
+    historico,
+    mostrarHistorico,
     handleMicClick,
     isRecording,
     handleClear,
@@ -68,10 +68,10 @@ export default function EstimationTool() {
     onChangeRating,
     handleDisLikeClick,
     setDislikeFeedback,
-    handleModal
+    handleModal,
   } = useHome();
 
-   const {t: translate} = useTranslation()
+  const { t: translate } = useTranslation();
 
   return (
     <div>
@@ -171,7 +171,7 @@ export default function EstimationTool() {
               variant="contained"
               color="primary"
             >
-              {translate('ESTIMATE_BUTTON')}
+              {translate("ESTIMATE_BUTTON")}
             </Button>
           </div>
 
@@ -265,6 +265,19 @@ export default function EstimationTool() {
           />
         </div>
       </div>
+      {mostrarHistorico && (
+        <TextField
+          label="Historico"
+          value={historico}
+          multiline
+          fullWidth
+          margin="normal"
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="outlined"
+        />
+      )}
       <Footer></Footer>
     </div>
   );

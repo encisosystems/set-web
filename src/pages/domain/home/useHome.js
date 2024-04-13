@@ -9,6 +9,7 @@ import { useSpeechToText } from "./useSpeechToText";
 import Swal from "sweetalert2";
 import useAnalyticsEventTracker from "./../../../hooks/useAnalyticsEventTracker";
 import ReactGA from 'react-ga4';
+import { API_URL } from "../../constants/api";
 
 export const useHome = () => {
   const gaTrackerEvent = useAnalyticsEventTracker("estimation");
@@ -47,7 +48,8 @@ export const useHome = () => {
   const [showCopy, setShowCopy] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [toast, setToast] = useState({ open: false, message: "" });
-
+  const [historico, setHistorico] = useState("");   //Oscar Paez
+  const [mostrarHistorico, setMostrarHistorico] = useState(false);   //Oscar Paez
   const id = useRef();
   const [ratingValue, setRatingValue] = useState(0);
 
@@ -141,6 +143,46 @@ export const useHome = () => {
     }
   };
 
+
+  const verHistorial = async () => {
+    setShowEstimations(false);
+    setShowCopy(false);
+    
+
+    try {
+        //18.221.175.62
+        const historial = await fetch(
+            `${API_URL}/Consultas`,
+            {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+        );
+    
+        if (!historial.ok) {
+            throw new Error(`HTTP error! status: ${historial.status}`);
+        }
+    
+        const datah = await historial.json();
+        console.log("data:", datah);
+
+        // Creamos un string con los datos formateados
+        let historicos = 'Consultas Realizadas:\n';
+        datah.forEach(item => {
+            historicos += `ID: ${item.id}, Consulta: ${item.consulta}, Respuesta: ${item.respuesta}\n`;
+        });
+
+        setHistorico(historicos);
+        setMostrarHistorico(true);
+
+    } catch (error) {
+        console.error('Error fetching estimations:', error);
+        throw error;
+    } 
+};
+
   // funciones privadas
   const _getTasksStringSmart = (data) => {
     return data.estimation.tasks
@@ -185,6 +227,9 @@ export const useHome = () => {
     frase,
     transcript,
     isRecording,
+    historico,
+    mostrarHistorico,
+    setHistorico,    
     setTranscript,
     stopRecording,
     handleMicClick,
@@ -204,5 +249,6 @@ export const useHome = () => {
     handleDisLikeClick,
     setDislikeFeedback,
     handleModal,
+    verHistorial
   };
 };
