@@ -3,6 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 import HistoryPage from "./pages/view/history";
 import { About } from "./pages/view/About";
 import { PrivateRoute } from "./../src/pages/components/Private.route";
+import { Login } from "./pages/view/Login";
+import { Register } from "./pages/view/Register";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +22,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "login",
-    element : <h1>Login</h1>
+    element : <Login />
+  },
+  {
+    path: "register",
+    element : <Register />
   }
 ]);

@@ -72,6 +72,10 @@ export default function EstimationTool() {
     verHistorial,
   } = useHome();
 
+  const styleLogin = {
+    marginLeft: "auto",
+    width: "fit-content"
+ };
   const { t: translate } = useTranslation();
 
   return (
