@@ -54,7 +54,7 @@ export default function EstimationTool() {
   
   const handleModal= async () => {
     const result = await swal.fire({
-      title: "Bienvenido a<br> Simple Estimation Tool",
+      title: "Bienvenido a<br> Enciso Systems",
       confirmButtonText: "Continuemos",
      
       reverseButtons: true,
@@ -63,7 +63,7 @@ export default function EstimationTool() {
     if (result.isConfirmed) {
       // Manejar la lógica de confirmación (por ejemplo, eliminación)
       swal.fire({
-        title: "¿Qué hacemos en SET?",
+        title: "¿Qué hacemos en Enciso Systems?",
         text: "Es una herramienta diseñada para proporcionar al usuario estimaciones del tiempo necesario para completar tareas según los criterios SMART (Específicos, Medibles, Alcanzables, Relevantes y Temporales).",
         
       });
@@ -229,6 +229,7 @@ export default function EstimationTool() {
   format='auto'
   responsive='true'
   layoutKey='-gw-1+2a-9x+5c'
+  
 />
       <Footer></Footer>
     </div>
