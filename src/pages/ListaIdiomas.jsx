@@ -5,7 +5,7 @@ import { BsTranslate } from "react-icons/bs";
 
 function ListadoIdiomas({ onLanguageChange }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("ES");
+  const [selectedLanguage, setSelectedLanguage] = useState("1");
 
   const toggle = () => setDropdownOpen(prevState => !prevState);
 
@@ -24,14 +24,14 @@ function ListadoIdiomas({ onLanguageChange }) {
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle caret style={{ color: '#000000', border: 'none', backgroundColor: "#ffffff" }}>
             <BsTranslate style={{ marginRight: '5px', fontSize: "20px" }} />
-            {selectedLanguage === "ES" ? "Español/Spanish" : "Inglés/English"}
+            {selectedLanguage === "1" ? "Español/Spanish" : "Inglés/English"}
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem onClick={() => handleLanguageChange("ES")} style={{ border: 'none' }}>
+            <DropdownItem onClick={() => handleLanguageChange("1")} style={{ border: 'none' }}>
               Español/Spanish
             </DropdownItem>
             <DropdownItem divider />
-            <DropdownItem onClick={() => handleLanguageChange("EN")} style={{ border: 'none' }}>
+            <DropdownItem onClick={() => handleLanguageChange("2")} style={{ border: 'none' }}>
               Inglés/English
             </DropdownItem>
           </DropdownMenu>
