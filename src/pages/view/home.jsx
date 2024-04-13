@@ -7,7 +7,7 @@ import GoogleADS from "../components/GoogleADS";
 import Footer from "./../components/Footer";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import DeleteIcon from "@mui/icons-material/Delete";
- import React from "react";
+import React from "react";
 import {
   Button,
   TextField,
@@ -44,19 +44,11 @@ export default function EstimationTool() {
     frase,
     historico,
     mostrarHistorico,
-    handleMicClick,
     isRecording,
     handleClear,
-    setTranscript,
-    stopRecording,
     transcript,
-    setDarkMode,
-    setDislikeClicked,
-    setLikeClicked,
-    setShowCopy,
-    setShowDislikeFeedback,
-    setShowEstimations,
-    setEstimations,
+    setTranscript,
+    handleMicClick,
     handleSubmitDislikeFeedbackAction,
     handleLikeClickAction,
     handleCloseDislikeFeedback,
@@ -71,13 +63,10 @@ export default function EstimationTool() {
     setDislikeFeedback,
     handleModal,
     verHistorial,
-    handleLanguageChange
+    handleLanguageChange,
   } = useHome();
 
-  const styleLogin = {
-    marginLeft: "auto",
-    width: "fit-content",
-  };
+ 
   const { t: translate } = useTranslation();
 
   return (
@@ -150,7 +139,11 @@ export default function EstimationTool() {
               margin="normal"
               autoComplete="off"
               inputProps={{
-                style: { textAlign: "center", backgroundColor: "white" },
+                style: {
+                  textAlign: "center",
+                  backgroundColor: "white",
+                  borderRadius: 30,
+                },
               }}
               InputProps={{
                 endAdornment: (
@@ -183,6 +176,7 @@ export default function EstimationTool() {
               onClick={handleEstimate}
               variant="contained"
               color="primary"
+              sx={{borderRadius: 30}}
             >
               {translate("ESTIMATE_BUTTON")}
             </Button>
