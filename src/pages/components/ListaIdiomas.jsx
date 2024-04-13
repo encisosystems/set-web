@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
-import flagES from './ES.png'; // Importa la imagen de la bandera para ES
-import flagUS from './US.png'; // Importa la imagen de la bandera para US
+import flagES from './../images/ES.png'; // Importa la imagen de la bandera para ES
+import flagUS from './../images/US.png'; // Importa la imagen de la bandera para US
 
 function Dropdownn({ onLanguageChange }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);

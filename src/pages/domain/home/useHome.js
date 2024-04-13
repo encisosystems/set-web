@@ -11,7 +11,7 @@ import useAnalyticsEventTracker from "./../../../hooks/useAnalyticsEventTracker"
 import ReactGA from 'react-ga4';
 import { API_URL } from "../../constants/api";
 import { fetchHistorialDb } from "../../data/home/fetchHistorial";
-
+import {changeLanguage} from "i18next"
 export const useHome = () => {
   const gaTrackerEvent = useAnalyticsEventTracker("estimation");
   const swal = Swal.mixin();
@@ -51,6 +51,9 @@ export const useHome = () => {
   const [toast, setToast] = useState({ open: false, message: "" });
   const [historico, setHistorico] = useState("");   //Oscar Paez
   const [mostrarHistorico, setMostrarHistorico] = useState(false);   //Oscar Paez
+  const [idLenguaje, setID] = useState(0);
+  const [language, setLanguage] = useState(1);
+
   const id = useRef();
   const [ratingValue, setRatingValue] = useState(0);
 
@@ -62,7 +65,7 @@ export const useHome = () => {
         setShowAlert(true);
         return;
       }
-      const data = await fetchEstimations(task);
+      const data = await fetchEstimations(task,language);
       if (data.smart) {
         // Procesa y muestra las estimaciones si smart es true
         const tasksString = _getTasksStringSmart(data);
@@ -144,6 +147,10 @@ export const useHome = () => {
     }
   };
 
+  const handleLanguageChange = (language) => {
+    setLanguage(language); // Actualiza el ID seleccionado
+    console.log(language);
+};
 
   const verHistorial = async () => {
     setShowEstimations(false);
@@ -173,6 +180,13 @@ export const useHome = () => {
       0
     )} horas`;
   };
+
+  useEffect(() => {
+    // feature/translate-text
+   // changeLanguage(language)
+
+}, [language]);
+
 
   useEffect(() => {
     ReactGA.send({
@@ -226,6 +240,7 @@ export const useHome = () => {
     handleDisLikeClick,
     setDislikeFeedback,
     handleModal,
-    verHistorial
+    verHistorial,
+    handleLanguageChange
   };
 };
