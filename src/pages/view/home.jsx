@@ -69,6 +69,7 @@ export default function EstimationTool() {
     handleDisLikeClick,
     setDislikeFeedback,
     handleModal,
+    verHistorial,
   } = useHome();
 
   const { t: translate } = useTranslation();
@@ -174,7 +175,17 @@ export default function EstimationTool() {
               {translate("ESTIMATE_BUTTON")}
             </Button>
           </div>
-
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "16px 0",
+            }}
+          >
+            <Button onClick={verHistorial} variant="contained" color="primary">
+              Historial
+            </Button>
+          </div>
           {showEstimations && (
             <>
               <TextField

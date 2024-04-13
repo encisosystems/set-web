@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import useAnalyticsEventTracker from "./../../../hooks/useAnalyticsEventTracker";
 import ReactGA from 'react-ga4';
 import { API_URL } from "../../constants/api";
+import { fetchHistorialDb } from "../../data/home/fetchHistorial";
 
 export const useHome = () => {
   const gaTrackerEvent = useAnalyticsEventTracker("estimation");
@@ -147,33 +148,9 @@ export const useHome = () => {
   const verHistorial = async () => {
     setShowEstimations(false);
     setShowCopy(false);
-    
-
     try {
         //18.221.175.62
-        const historial = await fetch(
-            `${API_URL}/Consultas`,
-            {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-        );
-    
-        if (!historial.ok) {
-            throw new Error(`HTTP error! status: ${historial.status}`);
-        }
-    
-        const datah = await historial.json();
-        console.log("data:", datah);
-
-        // Creamos un string con los datos formateados
-        let historicos = 'Consultas Realizadas:\n';
-        datah.forEach(item => {
-            historicos += `ID: ${item.id}, Consulta: ${item.consulta}, Respuesta: ${item.respuesta}\n`;
-        });
-
+        const historicos =  await fetchHistorialDb()
         setHistorico(historicos);
         setMostrarHistorico(true);
 
