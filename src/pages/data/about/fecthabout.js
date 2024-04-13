@@ -62,12 +62,6 @@ export const fecthAbout = () => {
       enviroment: "backend"
     },
     {
-      name: "Johan Molina",
-      description:
-        "Implementó una función que asegura que la aplicación responda en el idioma configurado, mejorando la accesibilidad para usuarios de diferentes regiones. Además, diseñó la interfaz para que registre todas las consultas realizadas durante la sesión, facilitando a los usuarios acceder a su historial de actividades.",
-      enviroment: "backend"
-    },
-    {
       name: "Camila Murillo",
       description:
         "Implementación de un sistema de sugerencias dentro de SET que evalúa los objetivos ingresados por los usuarios para determinar si cumplen con los criterios SMART, mejorando la experiencia del usuario al brindar orientación y apoyo para la formulación efectiva de objetivos.",
@@ -137,6 +131,12 @@ export const fecthAbout = () => {
       name: "Anderson Martínez",
       description:
         "Desarrolló una encuesta al finalizar que permite a los usuarios proporcionar retroalimentación sobre la precisión de las estimaciones, permitiendo clasificarlas como correctas, sobreestimadas, subestimadas o incorrectas. Además, Anderson creó un reporte que muestra los resultados de estas encuestas, proporcionando una visión general de la precisión de las estimaciones realizadas en la plataforma.",
+      enviroment: "frontend"
+    },
+    {
+      name: "Johan Molina",
+      description:
+        "Diseñó la interfaz para que se registren todas las consultas realizadas durante la sesión, facilitando a los usuarios acceder a su historial de actividades.",
       enviroment: "frontend"
     },
     {
