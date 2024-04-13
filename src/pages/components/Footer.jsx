@@ -11,7 +11,7 @@ const Footer = () => {
        
       </div>
       <hr style={{margin:"15px auto",width:"50%"}} />
-      <div>©2024{actualYear === 2024 ? null : '-'+ actualYear} - Enciso Estimation Tool.</div>
+      <div>©2024{actualYear === 2024 ? null : '-'+ actualYear} - Enciso Estimation.</div>
     </div>
     
   );
