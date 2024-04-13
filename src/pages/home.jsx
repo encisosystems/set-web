@@ -11,8 +11,8 @@ import {About} from "./view/About";
 
 
 export default function EstimationTool() {
-    //const API_URL = "http://18.221.34.229";
-    const API_URL = "http://localhost:8082";
+    const API_URL = "http://18.221.34.229";
+    //const API_URL = "http://localhost:8082";
     const [task, setTask] = useState("");
     const [estimations, setEstimations] = useState("");
     const [showEstimations, setShowEstimations] = useState(false);
