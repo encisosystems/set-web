@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import logosvg from '../assets/logo.svg';
-import  '../assets/SplashScreen.css';
-
+import '../assets/SplashScreen.css';
 
 const SplashScreen = ({ onFinish }) => {
   const [show, setShow] = useState(true);
@@ -13,14 +12,14 @@ const SplashScreen = ({ onFinish }) => {
     }, 3000); // Muestra el splash screen durante 3 segundos
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [onFinish]);  // Incluye onFinish en el array de dependencias
 
-  return (                                                             
-    <div className={`splash-screen ${show ? 'show' : 'hide'}`}>
+  return (
+      <div className={`splash-screen ${show ? 'show' : 'hide'}`}>
         <div className='logo-splashscreen'>
-      <img className='logo' src={logosvg} alt='Loading...'/>
+          <img className='logo' src={logosvg} alt='Loading...' />
         </div>
-    </div>
+      </div>
   );
 };
 

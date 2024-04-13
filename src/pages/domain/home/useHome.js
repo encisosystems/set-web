@@ -2,22 +2,30 @@ import { useRef, useState } from "react";
 import { fetchEstimations, setRating } from "../../data/home/fetchEstimations";
 
 export const useHome = () => {
-  const [task, setTask] = useState("");
-  const [estimations, setEstimations] = useState("");
-  const [showEstimations, setShowEstimations] = useState(false);
-  const [showCopy, setShowCopy] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [toast, setToast] = useState({ open: false, message: "" });
-  const id = useRef()
-  const [ratingValue, setRatingValue] = useState(0);
+    /*const [task, setTask] = useState("");
+    const [estimations, setEstimations] = useState("");
+    const [showEstimations, setShowEstimations] = useState(false);
+    const [showCopy, setShowCopy] = useState(false);
+    const [id, setID] = useState(0);
+    const [idLanguage, setIdLanguage] = useState(1);
+    const [ratingValue, setRatingValue] = useState(0);
+    const [toast, setToast] = useState({ open: false, message: "", severity: "" });
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showLoading, setShowLoading] = useState(false);
+    const [showAbout, setShowAbout] = useState(false);
 
   const handleEstimate = async () => {
     try {
       setShowEstimations(false);
       setShowCopy(false);
+      setShowLoading(true)
       if (!task) {
-        setShowAlert(true);
-        return;
+          setToast({
+              open: true,
+              message: "Por favor, ingrese un objetivo antes de obtener la estimación.",
+              severity: "warning",
+          });
+          setShowLoading(false);
       }
       const data = await fetchEstimations(task);
       if (data.smart) {
@@ -36,23 +44,26 @@ export const useHome = () => {
         setShowCopy(false); // Controla la visibilidad del botón de copia
       }
       id.current = data.id;
-    } catch (error) {
-      setEstimations(`Error al obtener las estimaciones: ${error.message}`);
-      setShowEstimations(true);
-      setShowCopy(false); // Ocultar el botón de copia en caso de error
+    }
+    catch (error) {
+        setEstimations(`Error al obtener las estimaciones: ${error.message}`);
+        setShowEstimations(true);
+        setShowCopy(false); // Ocultar el botón de copia en caso de error
+    }
+    finally{
+        setShowLoading(false);
     }
   };
 
-  
  const copyToClipboard = () => {
     navigator.clipboard.writeText(estimations).then(() => {
       setToast({
         open: true,
         message: "Estimaciones copiadas al portapapeles",
+          severity: "success",
       });
     });
   };
-
 
   // funciones privadas
   const _getTasksStringSmart = (data) => {
@@ -68,39 +79,38 @@ export const useHome = () => {
     )} horas`;
   };
 
-  
   const onChangeRating = async (_, newRating) => {
     setRatingValue(newRating)
-    try {
-        setRating(id.current,newRating)
-        setToast({
-            open: true,
-            message: "Gracias por evaluar las Estimaciones"
-        });
-    } catch (error) {
-        console.error('Error fetching estimations:', error);
-        throw error;
-    }
-
-
-    // pendiente: llamar API para guardar el valor
-}
+      console.log(newRating);
+      try {
+          const response = await fetch(`${API_URL}/API/estimations/${id}`, {
+              method: "POST",
+              body: JSON.stringify({
+                  stars: newRating,
+              }),
+              headers: {
+                  "Content-Type": "application/json",
+              },
+          });
+          setToast({
+              open: true,
+              message: "Gracias por evaluar las Estimaciones",
+              severity: "success",
+          });
+      } catch (error) {
+          console.error("Error fetching estimations:", error);
+          throw error;
+      }
+  }
 
   return {
-    task,
-    estimations,
-    showEstimations,
-    showCopy,
-    showAlert,
-    toast,
-    setTask,
-    setEstimations,
-    setShowEstimations,
-    setShowCopy,
-    setShowAlert,
-    setToast,
+    task, setTask,
+    estimations, setEstimations,
+    showEstimations, setShowEstimations,
+    showCopy, setShowCopy,
+    toast, setToast,
     handleEstimate,
     copyToClipboard,
     onChangeRating
-  };
+  };*/
 };

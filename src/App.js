@@ -1,4 +1,3 @@
-import EstimationTool from "./pages/view/home";
 import React, { useState } from 'react';
 import SplashScreen from './pages/SplashScreen.jsx'
 import EstimationTool from './pages/home';

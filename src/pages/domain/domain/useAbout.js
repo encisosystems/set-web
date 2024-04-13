@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fecthAbout } from "../../data/about/fecthabout";
 
 export const useAbout = () => {
@@ -19,8 +19,8 @@ export const useAbout = () => {
 
   const getUserCredis = () => {
     const userFetch = fecthAbout()
-    const userBackend = userFetch.filter(user => user.enviroment == "backend");
-    const userFronted = userFetch.filter(user => user.enviroment == "frontend");
+    const userBackend = userFetch.filter(user => user.enviroment === "backend");
+    const userFronted = userFetch.filter(user => user.enviroment === "frontend");
     setUsersBackend(userBackend)
     setUsersFrondtend(userFronted)
   }
