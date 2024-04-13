@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
-import flagES from './ES.png'; // Importa la imagen de la bandera para ES
-import flagUS from './US.png'; // Importa la imagen de la bandera para US
+import flagES from './../images/ES.png'; // Importa la imagen de la bandera para ES
+import flagUS from './../images/US.png'; // Importa la imagen de la bandera para US
 
 function Dropdownn({ onLanguageChange }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("Language");
+  const [selectedLanguage, setSelectedLanguage] = useState("es");
 
   const toggle = () => setDropdownOpen(prevState => !prevState);
 
-  const accionprueba = (id) => {
-    setSelectedLanguage("ES");
-    onLanguageChange(id); 
-  }
-
-  const accionprueba2 = (id) => {
-    setSelectedLanguage("US");
-    onLanguageChange(id);
+  const changeLanguage = (language) => {
+    setSelectedLanguage(language);
+    onLanguageChange(language)
   }
 
   useEffect(() => {
@@ -28,13 +23,13 @@ function Dropdownn({ onLanguageChange }) {
     <div>
       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
         <DropdownToggle caret style={{ color: '#ffffff', background: 'linear-gradient(45deg, #287ddd, #ffffff)', border: 'none' }}>
-          {selectedLanguage === "ES" ? <img src={flagES} alt="ES" style={{ width: '20px', height: '20px', marginRight: '8px' }} /> : null}
-          {selectedLanguage === "US" ? <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginRight: '8px' }} /> : null}
-          {selectedLanguage}
+          {selectedLanguage === "es" ? <img src={flagES} alt="ES" style={{ width: '20px', height: '20px', marginRight: '8px' }} /> : null}
+          {selectedLanguage === "en" ? <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginRight: '8px' }} /> : null}
+          {selectedLanguage.toUpperCase()}
         </DropdownToggle>
         <DropdownMenu style={{ background: 'linear-gradient(45deg, #287ddd, #ffffff)' }}>
           <DropdownItem
-            onClick={() => accionprueba("1")} // Pasa el ID como parámetro
+            onClick={() => changeLanguage("es")} // Pasa el ID como parámetro
             style={{ color: '#ffffff', border: 'none' }}
             id="1"
             
@@ -43,11 +38,11 @@ function Dropdownn({ onLanguageChange }) {
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem
-            onClick={() => accionprueba2("2")} // Pasa el ID como parámetro
+            onClick={() => changeLanguage("en")} // Pasa el ID como parámetro
             style={{ color: '#ffffff', border: 'none' }}
             id="2"
           >
-            <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginLeft: '0.1px' }} /> US
+            <img src={flagUS} alt="US" style={{ width: '20px', height: '20px', marginLeft: '0.1px' }} /> EN
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

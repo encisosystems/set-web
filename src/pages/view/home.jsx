@@ -7,8 +7,7 @@ import GoogleADS from "../components/GoogleADS";
 import Footer from "./../components/Footer";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Swal from "sweetalert2";
-import React from "react";
+ import React from "react";
 import {
   Button,
   TextField,
@@ -24,6 +23,8 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "../components/toast"; // Componente Toast para mostrar mensajes
 import { useHome } from "../domain/home/useHome";
+import { useTranslation } from "react-i18next";
+import Dropdownn from "../components/ListaIdiomas";
 
 export default function EstimationTool() {
   const {
@@ -41,6 +42,8 @@ export default function EstimationTool() {
     likeClicked,
     imagen,
     frase,
+    historico,
+    mostrarHistorico,
     handleMicClick,
     isRecording,
     handleClear,
@@ -66,13 +69,25 @@ export default function EstimationTool() {
     onChangeRating,
     handleDisLikeClick,
     setDislikeFeedback,
-    handleModal
+    handleModal,
+    verHistorial,
+    handleLanguageChange
   } = useHome();
+
+  const styleLogin = {
+    marginLeft: "auto",
+    width: "fit-content",
+  };
+  const { t: translate } = useTranslation();
 
   return (
     <div>
       <div style={{ width: "100%", top: 20 }}>
-        <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
+        <h1 style={{ textAlign: "center" }}>
+          <span style={{ fontFamily: "Impact", color: "#1E196A" }}>
+            Simple Estimation Tool
+          </span>
+        </h1>
         <GoogleADS />
 
         <div
@@ -134,7 +149,9 @@ export default function EstimationTool() {
               fullWidth
               margin="normal"
               autoComplete="off"
-              inputProps={{ style: { textAlign: "center" } }}
+              inputProps={{
+                style: { textAlign: "center", backgroundColor: "white" },
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -167,10 +184,20 @@ export default function EstimationTool() {
               variant="contained"
               color="primary"
             >
-              Estimar
+              {translate("ESTIMATE_BUTTON")}
             </Button>
           </div>
-
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "16px 0",
+            }}
+          >
+            <Button onClick={verHistorial} variant="contained" color="primary">
+              Historial
+            </Button>
+          </div>
           {showEstimations && (
             <>
               <TextField
@@ -181,6 +208,7 @@ export default function EstimationTool() {
                 margin="normal"
                 InputProps={{
                   readOnly: true,
+                  style: { backgroundColor: "white" },
                 }}
                 variant="outlined"
               />
@@ -277,7 +305,26 @@ export default function EstimationTool() {
           />
         </div>
       <GoogleADS/>
+      {mostrarHistorico && (
+        <TextField
+          label="Historico"
+          value={historico}
+          multiline
+          fullWidth
+          margin="normal"
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="outlined"
+        />
+      )}
       <Footer></Footer>
+      <div
+        className="container"
+        style={{ position: "absolute", top: "10px", left: "10px" }}
+      >
+        <Dropdownn onLanguageChange={handleLanguageChange} />
+      </div>
     </div>
   );
 }

@@ -7,7 +7,13 @@ import {
 import { useDarkMode } from "./userDarkMode";
 import { useSpeechToText } from "./useSpeechToText";
 import Swal from "sweetalert2";
+import useAnalyticsEventTracker from "./../../../hooks/useAnalyticsEventTracker";
+import ReactGA from 'react-ga4';
+import { API_URL } from "../../constants/api";
+import { fetchHistorialDb } from "../../data/home/fetchHistorial";
+import {changeLanguage} from "i18next"
 export const useHome = () => {
+  const gaTrackerEvent = useAnalyticsEventTracker("estimation");
   const swal = Swal.mixin();
   const [task, setTask] = useState("");
   const {
@@ -38,12 +44,15 @@ export const useHome = () => {
     handleMicClick,
   } = useSpeechToText();
 
-
   const [estimations, setEstimations] = useState("");
   const [showEstimations, setShowEstimations] = useState(false);
   const [showCopy, setShowCopy] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [toast, setToast] = useState({ open: false, message: "" });
+  const [historico, setHistorico] = useState("");   //Oscar Paez
+  const [mostrarHistorico, setMostrarHistorico] = useState(false);   //Oscar Paez
+  const [idLenguaje, setID] = useState(0);
+  const [language, setLanguage] = useState(1);
 
   const id = useRef();
   const [ratingValue, setRatingValue] = useState(0);
@@ -56,7 +65,7 @@ export const useHome = () => {
         setShowAlert(true);
         return;
       }
-      const data = await fetchEstimations(task);
+      const data = await fetchEstimations(task,language);
       if (data.smart) {
         // Procesa y muestra las estimaciones si smart es true
         const tasksString = _getTasksStringSmart(data);
@@ -96,6 +105,7 @@ export const useHome = () => {
   };
 
   const copyToClipboard = () => {
+    gaTrackerEvent("copy task estimated action", "Copy generated estimation");
     navigator.clipboard.writeText(estimations).then(() => {
       setToast({
         open: true,
@@ -120,11 +130,11 @@ export const useHome = () => {
     // pendiente: llamar API para guardar el valor
   };
 
-  const handleModal= async () => {
+  const handleModal = async () => {
     const result = await swal.fire({
       title: "Bienvenido a<br> Enciso Estimation Tool",
       confirmButtonText: "Continuemos",
-     
+
       reverseButtons: true,
     });
 
@@ -133,11 +143,29 @@ export const useHome = () => {
       swal.fire({
         title: "¿Qué hacemos en Enciso Estimation Tool?",
         text: "Es una herramienta diseñada para proporcionar al usuario estimaciones del tiempo necesario para completar tareas según los criterios SMART (Específicos, Medibles, Alcanzables, Relevantes y Temporales).",
-        
       });
-    } 
+    }
   };
 
+  const handleLanguageChange = (language) => {
+    setLanguage(language); // Actualiza el ID seleccionado
+    console.log(language);
+};
+
+  const verHistorial = async () => {
+    setShowEstimations(false);
+    setShowCopy(false);
+    try {
+        //18.221.175.62
+        const historicos =  await fetchHistorialDb()
+        setHistorico(historicos);
+        setMostrarHistorico(true);
+
+    } catch (error) {
+        console.error('Error fetching estimations:', error);
+        throw error;
+    } 
+};
 
   // funciones privadas
   const _getTasksStringSmart = (data) => {
@@ -152,6 +180,21 @@ export const useHome = () => {
       0
     )} horas`;
   };
+
+  useEffect(() => {
+    // feature/translate-text
+   // changeLanguage(language)
+
+}, [language]);
+
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: "/",
+      title: "Estimation page Home",
+    });
+  }, []);
 
 
 
@@ -175,6 +218,9 @@ export const useHome = () => {
     frase,
     transcript,
     isRecording,
+    historico,
+    mostrarHistorico,
+    setHistorico,    
     setTranscript,
     stopRecording,
     handleMicClick,
@@ -193,6 +239,8 @@ export const useHome = () => {
     handleSubmitDislikeFeedbackAction,
     handleDisLikeClick,
     setDislikeFeedback,
-    handleModal
+    handleModal,
+    verHistorial,
+    handleLanguageChange
   };
 };
