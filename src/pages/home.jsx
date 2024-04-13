@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../components/Footer";
 import imagenPaute from "../assets/pauteaqui.jpg";
-import GoogleADS from "../components/GoogleADS";
+import Bienvenida from "../components/Bienvenida";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import Swal from "sweetalert2";
 import {
@@ -14,18 +14,9 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp"; // Importa el icono del pulgar hacia arriba
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
-import Brightness7Icon from "@mui/icons-material/Brightness7"; // Icono para representar el sol
-import Brightness3Icon from "@mui/icons-material/Brightness3"; // Icono para representar la luna
-import ShareIcon from "@mui/icons-material/Share";
-import { Facebook, WhatsApp, Email } from "@mui/icons-material";
-import Toast from "./toast"; // Componente Toast para mostrar mensajes
-import Dropdownn from "./ListaIdiomas";
-import { MicButton, useSpeechToText } from '../voice/voice-final';
+import AdSense from 'react-adsense';
 
 export default function EstimationTool() {
 
@@ -134,26 +125,7 @@ export default function EstimationTool() {
     <div>
       <div style={{ width: "100%", top: 20 }}>
         <h1 style={{ textAlign: "center" }}>Simple Estimation Tool</h1>
-        <GoogleADS />
-   
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-        <div
-          style={{
-            width: "50%",
-            height: "300px",
-            backgroundColor: "red",
-            margin: "0 auto",
-          }}
-        >
-  
-          <img
-            style={{ width: "100%", height: "100%" }}
-            src={imagenPaute}
-            alt=""
-          />
-        </div>
+        <Bienvenida />
       </div>
       <div
         style={{
@@ -250,9 +222,16 @@ export default function EstimationTool() {
           />
         </div>
       </div>
+      <AdSense.Google
+  client='ca-pub-2843282274139612'
+  slot='9039895067'
+  style={{ display: 'block' }}
+  format='auto'
+  responsive='true'
+  layoutKey='-gw-1+2a-9x+5c'
+  
+/>
       <Footer></Footer>
     </div>
   );
 }
-
-

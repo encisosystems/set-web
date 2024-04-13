@@ -122,7 +122,7 @@ export const useHome = () => {
 
   const handleModal= async () => {
     const result = await swal.fire({
-      title: "Bienvenido a<br> Simple Estimation Tool",
+      title: "Bienvenido a<br> Enciso Estimation Tool",
       confirmButtonText: "Continuemos",
      
       reverseButtons: true,
@@ -131,7 +131,7 @@ export const useHome = () => {
     if (result.isConfirmed) {
       // Manejar la lógica de confirmación (por ejemplo, eliminación)
       swal.fire({
-        title: "¿Qué hacemos en SET?",
+        title: "¿Qué hacemos en Enciso Estimation Tool?",
         text: "Es una herramienta diseñada para proporcionar al usuario estimaciones del tiempo necesario para completar tareas según los criterios SMART (Específicos, Medibles, Alcanzables, Relevantes y Temporales).",
         
       });

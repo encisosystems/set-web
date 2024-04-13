@@ -261,6 +261,22 @@ export default function EstimationTool() {
           />
         </div>
       </div>
+      <div
+          style={{
+            width: "50%",
+            height: "300px",
+            backgroundColor: "red",
+            margin: "0 auto",
+          }}
+        >
+
+          <img
+            style={{ width: "100%", height: "100%" }}
+            src="/pauta.jpeg"
+            alt=""
+          />
+        </div>
+      <GoogleADS/>
       <Footer></Footer>
     </div>
   );
