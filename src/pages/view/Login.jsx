@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { Button, FormControl, FormLabel, TextField } from "@mui/material";
 import { useLogin } from "../domain/login/useLogin";
@@ -21,7 +21,7 @@ const styleButtons = {
   width: "fit-content",
 };
 
-export const Login = ({ handleOpen, handleLogin }) => {
+export const Login = () => {
   const { username, password, setPassword, setUsername, handleSubmit } =
     useLogin();
 
@@ -29,42 +29,42 @@ export const Login = ({ handleOpen, handleLogin }) => {
     <div>
       <Box sx={style}>
         <h2 id="modal-title">Inicio de sesión</h2>
-        <FormControl sx={{ width: "100%" }}>
-          <FormLabel>Usuario</FormLabel>
-          <TextField
-            type="text"
-            variant="filled"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Usuario"
-          />
-          <FormLabel>Contraseña</FormLabel>
-          <TextField
-            type="password"
-            variant="filled"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Contraseña"
-          />
-        </FormControl>
-        <p>
-          Si no tienes cuenta y quieres guardar tu historial, considera&nbsp;
-          <Link to={"/register"}>registrarte</Link>
-        </p>
-        <hr />
-        <div style={styleButtons}>
-          <Button variant="contained" color="error">
-            Cancelar
-          </Button>
-          &nbsp;
-          <Button
-            variant="contained"
-            onClick={() => handleSubmit("login")}
-            color="primary"
-          >
-            Iniciar sesion
-          </Button>
-        </div>
+        <form onSubmit={(e) => {e.preventDefault();handleSubmit("login")}} >
+          <FormControl sx={{ width: "100%" }}>
+            <FormLabel>Usuario</FormLabel>
+            <TextField
+              type="text"
+              variant="filled"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Usuario"
+              required
+            />
+            <FormLabel>Contraseña</FormLabel>
+            <TextField
+              type="password"
+              variant="filled"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              required
+            />
+            <p>
+              Si no tienes cuenta y quieres guardar tu historial, considera&nbsp;
+              <Link to={"/register"}>registrarte</Link>
+            </p>
+            <hr />
+            <div style={styleButtons}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
+                Iniciar sesion
+              </Button>
+            </div>
+          </FormControl>
+        </form>
       </Box>
     </div>
   );

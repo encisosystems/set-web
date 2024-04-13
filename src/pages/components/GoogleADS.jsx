@@ -1,31 +1,14 @@
-import imagenPaute from "./../images/pauteaqui.jpg";
+import AdSense from 'react-adsense';
 
 const GoogleADS = () => {
-  return (
-    <>
-      <div
-        style={{
-          width: "50%",
-          height: "300px",
-          margin: "0 auto",
-        }}
-      >
-        <img
-          style={{ width: "100%", height: "100%" }}
-          src={imagenPaute}
-          alt=""
-        />
-      </div>
-      <ins
-        class="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-client="ca-pub-2780749763957723"
-        data-ad-slot="2587403147"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
-    </>
-  );
+    <AdSense.Google
+    client='ca-pub-2843282274139612'
+    slot='9039895067'
+    style={{ display: 'block' }}
+    format='auto'
+    responsive='true'
+    layoutKey='-gw-1+2a-9x+5c'
+  />
 };
 
 export default GoogleADS;
