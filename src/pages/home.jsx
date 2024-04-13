@@ -4,6 +4,7 @@ import imagenPaute from "../assets/pauteaqui.jpg";
 import Bienvenida from "../components/Bienvenida";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import Swal from "sweetalert2";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -17,41 +18,41 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Toast from "./toast"; // Componente Toast para mostrar mensajes
 import AdSense from 'react-adsense';
+import { useTranslation } from 'react-i18next';
 
 export default function EstimationTool() {
-
-  const swal = Swal.mixin();
-  const [task, setTask] = useState("");
-  const [estimations, setEstimations] = useState("");
-  const [showEstimations, setShowEstimations] = useState(false);
-  const [showCopy, setShowCopy] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [toast, setToast] = useState({ open: false, message: "" });
-
-  const fetchEstimations = async () => {
-    try {
-      const response = await fetch(
-        `http://18.221.175.62/API/chat?task=${encodeURIComponent(task)}`,
-        {
-          method: "GET",
+    const [task, setTask] = useState("");
+    const [estimations, setEstimations] = useState("");
+    const [showEstimations, setShowEstimations] = useState(false);
+    const [showCopy, setShowCopy] = useState(false);
+    const [historico, setHistorico] = useState("");   //Oscar Paez
+    const [mostrarHistorico, setMostrarHistorico] = useState(false);   //Oscar Paez
+    const [showAlert, setShowAlert] = useState(false);
+    const [toast, setToast] = useState({ open: false, message: "" });
+    const {t} = useTranslation()
+    const fetchEstimations = async () => {
+        try {
+            const response = await fetch(
+                `http://18.221.175.62/API/chat?task=${encodeURIComponent(task)}`,
+                {
+                method: 'GET',
+                }
+            );
+        
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        
+            const data = await response.json();
+            console.log("data:", data);
+            return data;
+        } catch (error) {
+            console.error('Error fetching estimations:', error);
+            throw error;
         }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("data:", data);
-      return data;
-    } catch (error) {
-      console.error("Error fetching estimations:", error);
-      throw error;
-    }
-  };
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2780749763957723"
-     crossorigin="anonymous"></script>
+    };
   
+    
   const handleModal= async () => {
     const result = await swal.fire({
       title: "Bienvenido a<br> Simple Estimation Tool",
@@ -70,6 +71,15 @@ export default function EstimationTool() {
     } 
   };
 
+    const copyToClipboard = () => {
+        gaTrackerEvent('copy task estimated action', "Copy generated estimation");
+        navigator.clipboard.writeText(estimations).then(() => {
+            setToast({
+                    open: true,
+                    message: "Estimaciones copiadas al portapapeles",
+            });
+        });
+    };
 
   const handleEstimate = () => {
     setShowEstimations(false);
@@ -79,7 +89,7 @@ export default function EstimationTool() {
       return;
     }
 
-    fetchEstimations()
+    fetchEstimations() 
       .then((data) => {
         //console.log("Estimations:", data.smart);
         if (data.smart) {
@@ -110,15 +120,6 @@ export default function EstimationTool() {
         setShowEstimations(true);
         setShowCopy(false); // Ocultar el botón de copia en caso de error
       });
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(estimations).then(() => {
-      setToast({
-        open: true,
-        message: "Estimaciones copiadas al portapapeles",
-      });
-    });
   };
 
   return (
@@ -221,6 +222,7 @@ export default function EstimationTool() {
             onClose={() => setToast({ ...toast, open: false })}
           />
         </div>
+
       </div>
       <AdSense.Google
   client='ca-pub-2843282274139612'
