@@ -237,6 +237,7 @@ export default function EstimationTool() {
             onClose={() => setToast({ ...toast, open: false })}
           />
         </div>
+
       </div>
       <Footer></Footer>
     </div>
