@@ -1,3 +1,6 @@
+## Intalacion de las librerias
+Para instalar las librerias y modulos necesarios usar el siguiente comando: `npm i`
+
 ## Ejecución de la aplicación
 
 Para ejecutar la aplicación, se debe ejecutar el comando `npm start` en la terminal. Este comando iniciará un servidor web en el puerto 3000, y abrirá una ventana en el navegador con la aplicación. En caso de que no se abra automáticamente, se puede acceder a la aplicación en la dirección [http://localhost:3000](http://localhost:3000).
