@@ -1,5 +1,9 @@
+## Descargar el codigo
+- Para descargar el codigo mediante comando usar el siguiente comando: `git clone -b develop https://github.com/encisosystems/set-web.git`
+- Para descargar desde la pagina web de github, entrar a la rama `develop`, dar click en botón azul `<> Code` y click en `Donwload zip`
+
 ## Intalacion de las librerias
-Para instalar las librerias y modulos necesarios usar el siguiente comando: `npm i`
+Para instalar las librerias y modulos necesarios, entrar a la carpeta del proyecto y usar el siguiente comando: `npm i`
 
 ## Ejecución de la aplicación
 
