@@ -1,0 +1,52 @@
+.App {
+  text-align: center;
+}
+
+.background-color {
+  background-color: #FFF7FC;
+}
+
+.App-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo-menu {
+  height: 60%; /* Tamaño del logotipo */
+  width: auto;
+  max-width: 100%; /* Asegura que el logotipo no se desborde en pantallas pequeñas */
+}
+
+.tittle-header {
+  font-size: 32px; /* Tamaño del texto del h1 */
+  color: rgb(27, 27, 27);
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
