@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { BsTranslate } from "react-icons/bs";
@@ -6,9 +7,7 @@ import { BsTranslate } from "react-icons/bs";
 function ListadoIdiomas({ onLanguageChange }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("1");
-
   const toggle = () => setDropdownOpen(prevState => !prevState);
-
   const handleLanguageChange = (languageCode) => {
     setSelectedLanguage(languageCode);
     onLanguageChange(languageCode);
@@ -39,5 +38,9 @@ function ListadoIdiomas({ onLanguageChange }) {
       </div>
   );
 }
+// Define la validación de props usando PropTypes
+ListadoIdiomas.propTypes = {
+  onLanguageChange: PropTypes.func.isRequired, // Asegura que onLanguageChange sea una función requerida
+};
 
 export default ListadoIdiomas;
