@@ -5,8 +5,8 @@ export const useAbout = () => {
 
   const [showFrontend, setShowFrontend] = useState(false);
   const [showBackend, setShowBackend] = useState(false);
-  const [usersBackend, setUsersBackend] = useState();
-  const [usersFrontend, setUsersFrondtend] = useState();
+  const [usersBackend, setUsersBackend] = useState([]); 
+  const [usersFrontend, setUsersFrontend] = useState([]);
 
   const toggleFrontend = () => {
     setShowFrontend(!showFrontend);
@@ -16,18 +16,17 @@ export const useAbout = () => {
     setShowBackend(!showBackend);
   };
 
-
   const getUserCredis = () => {
-    const userFetch = fecthAbout()
+    const userFetch = fecthAbout();
     const userBackend = userFetch.filter(user => user.enviroment === "backend");
-    const userFronted = userFetch.filter(user => user.enviroment === "frontend");
-    setUsersBackend(userBackend)
-    setUsersFrondtend(userFronted)
+    const userFrontend = userFetch.filter(user => user.enviroment === "frontend");
+    setUsersBackend(userBackend);
+    setUsersFrontend(userFrontend); 
   }
 
   useEffect(() => {
     getUserCredis();
-  },[usersBackend,usersFrontend])
+  }, []); 
 
   return {
     showFrontend,
