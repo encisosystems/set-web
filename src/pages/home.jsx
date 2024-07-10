@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Button, Dialog, DialogActions, DialogContent, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, Menu, MenuItem, Rating, Select, TextField} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, FormControl, IconButton, InputAdornment, InputLabel, LinearProgress, Menu, MenuItem, Select, TextField} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import logotipo from "../assets/logotipo.svg";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -7,7 +7,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import {Email, Facebook, WhatsApp} from "@mui/icons-material";
 import Toast from "./components/toast"; // Componente Toast para mostrar mensajes
 import ListadoIdiomas from "./ListaIdiomas";
-import {About} from "./view/About";
+import {About} from "./view/About"; 
 
 
 export default function EstimationTool() {

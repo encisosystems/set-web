@@ -1,0 +1,6 @@
+projectKey=SET-WEB
+serverUrl=http://localhost:9000
+serverVersion=10.6.0.92116
+dashboardUrl=http://localhost:9000/dashboard?id=SET-WEB
+ceTaskId=0ccb0908-845a-4a29-b93c-d6e32070dbed
+ceTaskUrl=http://localhost:9000/api/ce/task?id=0ccb0908-845a-4a29-b93c-d6e32070dbed
